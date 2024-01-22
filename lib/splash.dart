@@ -1,4 +1,10 @@
+import 'dart:async';
+
+import 'package:a21/menu.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+
+import 'widgets.dart';
 
 class Splash extends StatelessWidget {
   const Splash({super.key});
@@ -10,6 +16,7 @@ class Splash extends StatelessWidget {
       return Stack(
         children: [
           const SizedBox(width: double.infinity, height: double.infinity),
+          _Ball(width: width),
           FootStands(width: width),
         ],
       );
@@ -17,40 +24,50 @@ class Splash extends StatelessWidget {
   }
 }
 
-class FootStands extends StatelessWidget {
-  const FootStands({
-    super.key,
+class _Ball extends StatefulWidget {
+  const _Ball({
     required this.width,
   });
 
   final double width;
 
   @override
+  State<_Ball> createState() => _BallState();
+}
+
+class _BallState extends State<_Ball> {
+  Timer? _timer;
+  double _angle = 0;
+  @override
+  void initState() {
+    _timer = Timer.periodic(const Duration(milliseconds: 100), (timer) {
+      setState(() {
+        _angle += 0.05;
+      });
+      if (_timer!.tick == 20) {
+        context.read<MenuCubit>().toUserName(MenuState.userName);
+      }
+    });
+    super.initState();
+  }
+
+  @override
+  void dispose() {
+    _timer?.cancel();
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Positioned(
-      bottom: -100,
-      left: 50,
-      child: ClipRRect(
-        borderRadius: BorderRadius.circular(10000),
-        child: Stack(
-          children: [
-            Container(
-              width: width * 1.4,
-              height: width * 1.4,
-              decoration: const BoxDecoration(
-                shape: BoxShape.circle,
-              ),
-            ),
-            Positioned(
-              bottom: 100,
-              left: 0,
-              child: Image.asset(
-                'assets/images/foot_stands.png',
-                fit: BoxFit.cover,
-              ),
-            ),
-          ],
-        ),
+      top: -widget.width * 0.3,
+      left: -widget.width * 0.4,
+      width: widget.width,
+      height: widget.width,
+      child: AnimatedRotation(
+        duration: const Duration(milliseconds: 100),
+        turns: _angle,
+        child: Image.asset('assets/images/ball.png'),
       ),
     );
   }

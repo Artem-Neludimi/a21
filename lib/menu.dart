@@ -1,4 +1,5 @@
 import 'package:a21/main.dart';
+import 'package:a21/widgets.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -30,37 +31,55 @@ class _MyHomePageState extends State<MyHomePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Container(
-        width: double.infinity,
-        height: double.infinity,
-        decoration: const BoxDecoration(
-          image: DecorationImage(
-            image: AssetImage('assets/images/splash_bg.png'),
-            fit: BoxFit.cover,
-          ),
-        ),
-        child: BlocBuilder<MenuCubit, MenuState>(
-          builder: (context, state) {
-            return AnimatedSwitcher(
-              duration: const Duration(seconds: 1),
-              child: switch (state) {
-                MenuState.splash => const Splash(
-                    key: ValueKey(MenuState.splash),
+      body: BlocBuilder<MenuCubit, MenuState>(
+        builder: (context, state) {
+          return LayoutBuilder(
+            builder: (context, constraints) {
+              final width = constraints.maxWidth;
+              return Stack(
+                children: [
+                  Container(
+                    width: double.infinity,
+                    height: double.infinity,
+                    decoration: BoxDecoration(
+                      image: DecorationImage(
+                        image: switch (state) {
+                          MenuState.splash => const AssetImage('assets/images/splash_bg.png'),
+                          _ => const AssetImage('assets/images/menu_bg.png'),
+                        },
+                        fit: BoxFit.cover,
+                      ),
+                    ),
+                    child: AnimatedSwitcher(
+                      duration: const Duration(milliseconds: 600),
+                      child: switch (state) {
+                        MenuState.splash => const Splash(
+                            key: ValueKey(MenuState.splash),
+                          ),
+                        MenuState.userName => const Column(
+                            key: ValueKey(MenuState.userName),
+                          )
+                      },
+                    ),
                   ),
-              },
-            );
-          },
-        ),
+                  FootStands(width: width),
+                ],
+              );
+            },
+          );
+        },
       ),
     );
   }
 }
 
-
 class MenuCubit extends Cubit<MenuState> {
   MenuCubit() : super(MenuState.splash);
+
+  void toUserName(MenuState state) => emit(MenuState.userName);
 }
 
 enum MenuState {
   splash,
+  userName,
 }
