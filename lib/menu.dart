@@ -1,4 +1,5 @@
 import 'package:a21/main.dart';
+import 'package:a21/nickname.dart';
 import 'package:a21/widgets.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -50,19 +51,19 @@ class _MyHomePageState extends State<MyHomePage> {
                         fit: BoxFit.cover,
                       ),
                     ),
-                    child: AnimatedSwitcher(
-                      duration: const Duration(milliseconds: 600),
-                      child: switch (state) {
-                        MenuState.splash => const Splash(
-                            key: ValueKey(MenuState.splash),
-                          ),
-                        MenuState.userName => const Column(
-                            key: ValueKey(MenuState.userName),
-                          )
-                      },
-                    ),
                   ),
                   FootStands(width: width),
+                  AnimatedSwitcher(
+                    duration: const Duration(milliseconds: 600),
+                    child: switch (state) {
+                      MenuState.splash => const Splash(
+                          key: ValueKey(MenuState.splash),
+                        ),
+                      MenuState.userName => const Nickname(
+                          key: ValueKey(MenuState.userName),
+                        ),
+                    },
+                  ),
                 ],
               );
             },

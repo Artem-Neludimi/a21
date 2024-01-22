@@ -38,3 +38,37 @@ class FootStands extends StatelessWidget {
     );
   }
 }
+
+class TextWithShadow extends StatelessWidget {
+  const TextWithShadow(
+    this.text, {
+    super.key,
+    this.fontSize,
+    this.color = Colors.white,
+    this.shadowColor = Colors.black,
+  });
+  final String text;
+  final double? fontSize;
+  final Color color;
+  final Color shadowColor;
+
+  @override
+  Widget build(BuildContext context) {
+    return Text(
+      text,
+      textAlign: TextAlign.center,
+      style: TextStyle(
+        color: color,
+        fontWeight: FontWeight.w600,
+        fontSize: fontSize,
+        shadows: [
+          Shadow(
+            color: shadowColor,
+            offset: const Offset(1, 3),
+            blurRadius: 5,
+          ),
+        ],
+      ),
+    );
+  }
+}

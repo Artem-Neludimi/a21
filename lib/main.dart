@@ -18,14 +18,27 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocProvider(
-      create: (context) => MenuCubit(),
+    return MultiBlocProvider(
+      providers: [
+        BlocProvider(
+          create: (context) => MenuCubit(),
+        ),
+        BlocProvider(
+          create: (context) => AppCubit(),
+        ),
+      ],
       child: MaterialApp(
         debugShowCheckedModeBanner: false,
         title: 'Flutter Demo',
         theme: ThemeData(
-          colorScheme: const ColorScheme.dark(),
+          textSelectionTheme: const TextSelectionThemeData(
+            cursorColor: Colors.white,
+            selectionColor: Colors.white,
+            selectionHandleColor: Colors.white,
+          ),
+          colorScheme: const ColorScheme.dark().copyWith(),
           useMaterial3: true,
+          fontFamily: 'Jost',
         ),
         routes: {
           '/': (context) => const MyHomePage(),
@@ -33,4 +46,19 @@ class MyApp extends StatelessWidget {
       ),
     );
   }
+}
+
+class AppCubit extends Cubit<AppState> {
+  AppCubit()
+      : super(
+          AppState(
+            nickName: prefs.getString('nickName'),
+          ),
+        );
+}
+
+class AppState {
+  const AppState({this.nickName});
+
+  final String? nickName;
 }
