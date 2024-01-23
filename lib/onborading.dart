@@ -1,21 +1,17 @@
+// ignore_for_file: use_build_context_synchronously
+
 import 'dart:ui';
 
+import 'package:a21/home.dart';
+import 'package:a21/main.dart';
 import 'package:a21/widgets.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:gradient_borders/gradient_borders.dart';
 
-class Onboarding extends StatefulWidget {
+class Onboarding extends StatelessWidget {
   const Onboarding({super.key});
 
-  @override
-  State<Onboarding> createState() => _OnboardingState();
-}
-
-class _OnboardingState extends State<Onboarding> {
-  @override
-  void initState() {
-    // TODO: implement initState
-    super.initState();
-  }
   @override
   Widget build(BuildContext context) {
     return SafeArea(
@@ -44,6 +40,17 @@ class _OnboardingState extends State<Onboarding> {
                           padding: const EdgeInsets.all(8),
                           decoration: BoxDecoration(
                             color: Colors.white.withOpacity(0.1),
+                            border: const GradientBoxBorder(
+                              width: 3,
+                              gradient: LinearGradient(
+                                begin: Alignment.topCenter,
+                                end: Alignment.bottomCenter,
+                                colors: [
+                                  Color.fromRGBO(222, 221, 211, 1),
+                                  Color.fromRGBO(209, 200, 163, 1),
+                                ],
+                              ),
+                            ),
                             borderRadius: BorderRadius.circular(16),
                           ),
                           child: Text(
@@ -67,8 +74,14 @@ class _OnboardingState extends State<Onboarding> {
                     ),
                   ),
                 ),
-                const SizedBox(height: 16),
-                const AppButton(text: 'NEXT')
+                const SizedBox(height: 8),
+                AppButton(
+                  onTap: () async {
+                    await prefs.setBool('firstTime', false);
+                    context.read<MenuCubit>().tryGoToMenu();
+                  },
+                  text: 'NEXT',
+                )
               ],
             );
           },

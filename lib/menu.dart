@@ -1,26 +1,29 @@
+import 'package:a21/home.dart';
 import 'package:a21/widgets.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
 class Menu extends StatelessWidget {
   const Menu({super.key});
 
   @override
   Widget build(BuildContext context) {
-    return const Padding(
-      padding: EdgeInsets.all(32),
+    return Padding(
+      padding: const EdgeInsets.all(32),
       child: Center(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            AppButton(text: 'START'),
-            SizedBox(height: 24),
-            AppButton(text: 'SHOP'),
-            SizedBox(height: 24),
-            AppButton(text: 'SETTINGS'),
-            SizedBox(height: 24),
-            AppButton(text: 'RATING'),
-            SizedBox(height: 24),
+            const AppButton(text: 'START'),
+            const SizedBox(height: 24),
+            const AppButton(text: 'SHOP'),
+            const SizedBox(height: 24),
+            const AppButton(text: 'SETTINGS'),
+            const SizedBox(height: 24),
+            const AppButton(text: 'RATING'),
+            const SizedBox(height: 24),
             AppButton(
+              onTap: () => context.read<MenuCubit>().toOnboarding(),
               text: 'HOW TO PLAY',
               height: 111,
             ),

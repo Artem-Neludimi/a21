@@ -25,8 +25,6 @@ class _MyHomePageState extends State<MyHomePage> {
       final firstTime = prefs.getBool('firstTime');
       if (firstTime == null) {
         await prefs.setBool('firstTime', true);
-      } else {
-        await prefs.setBool('firstTime', false);
       }
     });
     super.initState();
@@ -86,6 +84,7 @@ class MenuCubit extends Cubit<MenuState> {
   MenuCubit() : super(MenuState.splash);
 
   void toUserName(MenuState state) => emit(MenuState.userName);
+
   void tryGoToMenu() {
     final firstTime = prefs.getBool('firstTime')!;
     if (firstTime) {
@@ -94,6 +93,8 @@ class MenuCubit extends Cubit<MenuState> {
       emit(MenuState.menu);
     }
   }
+
+  void toOnboarding() => emit(MenuState.onboarding);
 }
 
 enum MenuState {
