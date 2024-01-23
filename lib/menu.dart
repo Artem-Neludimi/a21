@@ -14,7 +14,10 @@ class Menu extends StatelessWidget {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            const AppButton(text: 'START'),
+            AppButton(
+              onTap: () => Navigator.of(context).pushNamed('/game'),
+              text: 'START',
+            ),
             const SizedBox(height: 24),
             const AppButton(text: 'SHOP'),
             const SizedBox(height: 24),

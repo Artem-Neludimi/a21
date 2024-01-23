@@ -7,6 +7,8 @@ import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
+import 'game/game_screen.dart';
+
 late final SharedPreferences prefs;
 final player = AudioPlayer();
 bool isPlaying = false;
@@ -58,6 +60,7 @@ class _MyAppState extends State<MyApp> {
         ),
         routes: {
           '/': (context) => const MyHomePage(),
+          '/game': (context) => const GameScreen(),
         },
       ),
     );
