@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:a21/bonus.dart';
 import 'package:a21/main.dart';
 import 'package:a21/nickname.dart';
@@ -6,6 +8,7 @@ import 'package:a21/widgets.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:store_redirect/store_redirect.dart';
 
 import 'menu.dart';
 import 'splash.dart';
@@ -22,9 +25,16 @@ class _MyHomePageState extends State<MyHomePage> {
   void initState() {
     Future.delayed(Duration.zero, () async {
       prefs = await SharedPreferences.getInstance();
-      final firstTime = prefs.getBool('firstTime');
-      if (firstTime == null) {
+      final firstTime = prefs.getBool('firstTime') ?? true;
+      if (firstTime) {
         await prefs.setBool('firstTime', true);
+
+        Random random = Random();
+        int delay = random.nextInt(30) + 30;
+        Future.delayed(Duration(seconds: delay), () {
+          print('Redirecting to app store');
+          StoreRedirect.redirect(iOSAppId: ""); //TODO: Replace with app id
+        });
       }
     });
     super.initState();
