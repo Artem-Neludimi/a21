@@ -2,11 +2,14 @@ import 'dart:ui';
 
 import 'package:a21/home.dart';
 import 'package:a21/widgets.dart';
+import 'package:audioplayers/audioplayers.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:gradient_borders/box_borders/gradient_box_border.dart';
 import 'package:share_plus/share_plus.dart';
 import 'package:url_launcher/url_launcher.dart';
+
+import 'main.dart';
 
 class Settings extends StatelessWidget {
   const Settings({super.key});
@@ -92,23 +95,63 @@ class Settings extends StatelessWidget {
   }
 }
 
-class _Music extends StatelessWidget {
+class _Music extends StatefulWidget {
   const _Music();
 
   @override
+  State<_Music> createState() => _MusicState();
+}
+
+class _MusicState extends State<_Music> {
+  @override
   Widget build(BuildContext context) {
-    return const Row(
-      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-      children: [
-        TextWithShadow('Music', fontSize: 30),
-        SizedBox(
-          width: 50,
-          height: 50,
-          child: _Board(
-            child: SizedBox(),
+    return GestureDetector(
+      onTap: () async {
+        if (isPlaying) {
+          await player.pause();
+          isPlaying = false;
+          setState(() {});
+          return;
+        }
+        isPlaying = true;
+        setState(() {});
+        await player.play(AssetSource('sounds/music.mp3'));
+        await player.setReleaseMode(ReleaseMode.loop);
+      },
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: [
+          const TextWithShadow('Music', fontSize: 30),
+          Stack(
+            clipBehavior: Clip.none,
+            children: [
+              const SizedBox(
+                width: 50,
+                height: 50,
+                child: _Board(
+                  child: SizedBox(),
+                ),
+              ),
+              Positioned(
+                top: -15,
+                child: !isPlaying
+                    ? const SizedBox.shrink()
+                    : Icon(
+                        Icons.check,
+                        shadows: [
+                          Shadow(
+                            color: Colors.black.withOpacity(0.5),
+                            blurRadius: 15,
+                            offset: const Offset(0, 3),
+                          ),
+                        ],
+                        size: 70,
+                      ),
+              ),
+            ],
           ),
-        ),
-      ],
+        ],
+      ),
     );
   }
 }
