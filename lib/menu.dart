@@ -36,20 +36,17 @@ class _MyHomePageState extends State<MyHomePage> {
       builder: (context, state) {
         return Stack(
           children: [
-            Material(
-              child: Container(
-                width: double.infinity,
-                height: double.infinity,
-                decoration: BoxDecoration(
-                  image: DecorationImage(
-                    image: switch (state) {
-                      MenuState.splash => const AssetImage('assets/images/splash_bg.png'),
-                      _ => const AssetImage('assets/images/menu_bg.png'),
-                    },
-                    fit: BoxFit.cover,
-                  ),
-                ),
-              ),
+            Image.asset(
+              'assets/images/splash_bg.png',
+              width: double.infinity,
+              height: double.infinity,
+              fit: BoxFit.cover,
+            ),
+            Image.asset(
+              state == MenuState.splash ? 'assets/images/splash_bg.png' : 'assets/images/menu_bg.png',
+              width: double.infinity,
+              height: double.infinity,
+              fit: BoxFit.cover,
             ),
             FootStands(width: width),
             Scaffold(

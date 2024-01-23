@@ -60,6 +60,13 @@ class _NicknameState extends State<Nickname> {
                   style: const TextStyle(
                     color: Colors.white,
                     fontSize: 33,
+                    shadows: [
+                      Shadow(
+                        color: Colors.black,
+                        offset: Offset(1, 3),
+                        blurRadius: 5,
+                      ),
+                    ],
                   ),
                   decoration: const InputDecoration(
                     border: OutlineInputBorder(
