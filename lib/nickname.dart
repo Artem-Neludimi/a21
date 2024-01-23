@@ -1,6 +1,7 @@
 import 'dart:ui';
 
 import 'package:a21/main.dart';
+import 'package:a21/home.dart';
 import 'package:a21/widgets.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -41,7 +42,7 @@ class _NicknameState extends State<Nickname> {
             text: 'NEXT',
             onTap: () {
               context.read<AppCubit>().setNickName(_controller.text);
-              // context.read<MenuCubit>().toGame(MenuState.game);
+              context.read<MenuCubit>().tryGoToMenu();
             },
           )
         ],
