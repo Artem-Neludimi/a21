@@ -1,37 +1,85 @@
+import 'dart:ui';
+
 import 'package:a21/widgets.dart';
 import 'package:flutter/material.dart';
+import 'package:gradient_borders/gradient_borders.dart';
 
-class Nickname extends StatelessWidget {
+class Nickname extends StatefulWidget {
   const Nickname({
     super.key,
   });
 
   @override
+  State<Nickname> createState() => _NicknameState();
+}
+
+class _NicknameState extends State<Nickname> {
+  final _controller = TextEditingController();
+  @override
+  dispose() {
+    _controller.dispose();
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
-    return const Padding(
-      padding: EdgeInsets.symmetric(horizontal: 32),
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 32),
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          TextWithShadow(
+          const TextWithShadow(
             'USER NAME:',
             fontSize: 33,
           ),
-          SizedBox(height: 16),
-          TextField(
-            style: TextStyle(
-              color: Colors.white,
-              fontSize: 33,
-            ),
-            decoration: InputDecoration(
-              border: OutlineInputBorder(
-                borderSide: BorderSide.none,
+          const SizedBox(height: 16),
+          ClipRRect(
+            borderRadius: BorderRadius.circular(25),
+            child: BackdropFilter(
+              filter: ImageFilter.blur(sigmaX: 20, sigmaY: 20),
+              child: Container(
+                width: double.infinity,
+                height: 88,
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(25),
+                  border: const GradientBoxBorder(
+                    width: 4,
+                    gradient: LinearGradient(
+                      colors: [
+                        Color.fromRGBO(75, 123, 134, 1),
+                        Color.fromRGBO(153, 191, 176, 1),
+                        Color.fromRGBO(75, 123, 134, 1),
+                      ],
+                    ),
+                  ),
+                  color: Colors.white.withOpacity(0.1),
+                ),
+                child: TextField(
+                  controller: _controller,
+                  onTapOutside: (_) => FocusManager.instance.primaryFocus?.unfocus(),
+                  style: const TextStyle(
+                    color: Colors.white,
+                    fontSize: 33,
+                  ),
+                  decoration: const InputDecoration(
+                    border: OutlineInputBorder(
+                      borderSide: BorderSide.none,
+                    ),
+                    hintStyle: TextStyle(
+                      color: Colors.white,
+                      fontSize: 33,
+                      shadows: [
+                        Shadow(
+                          color: Colors.black,
+                          offset: Offset(1, 3),
+                          blurRadius: 5,
+                        ),
+                      ],
+                    ),
+                    hintText: 'Name',
+                  ),
+                ),
               ),
-              hintStyle: TextStyle(
-                color: Colors.white,
-                fontSize: 33,
-              ),
-              hintText: 'Name',
             ),
           ),
         ],

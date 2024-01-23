@@ -31,45 +31,44 @@ class _MyHomePageState extends State<MyHomePage> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: BlocBuilder<MenuCubit, MenuState>(
-        builder: (context, state) {
-          return LayoutBuilder(
-            builder: (context, constraints) {
-              final width = constraints.maxWidth;
-              return Stack(
-                children: [
-                  Container(
-                    width: double.infinity,
-                    height: double.infinity,
-                    decoration: BoxDecoration(
-                      image: DecorationImage(
-                        image: switch (state) {
-                          MenuState.splash => const AssetImage('assets/images/splash_bg.png'),
-                          _ => const AssetImage('assets/images/menu_bg.png'),
-                        },
-                        fit: BoxFit.cover,
-                      ),
-                    ),
-                  ),
-                  FootStands(width: width),
-                  AnimatedSwitcher(
-                    duration: const Duration(milliseconds: 600),
-                    child: switch (state) {
-                      MenuState.splash => const Splash(
-                          key: ValueKey(MenuState.splash),
-                        ),
-                      MenuState.userName => const Nickname(
-                          key: ValueKey(MenuState.userName),
-                        ),
+    final width = MediaQuery.of(context).size.width;
+    return BlocBuilder<MenuCubit, MenuState>(
+      builder: (context, state) {
+        return Stack(
+          children: [
+            Material(
+              child: Container(
+                width: double.infinity,
+                height: double.infinity,
+                decoration: BoxDecoration(
+                  image: DecorationImage(
+                    image: switch (state) {
+                      MenuState.splash => const AssetImage('assets/images/splash_bg.png'),
+                      _ => const AssetImage('assets/images/menu_bg.png'),
                     },
+                    fit: BoxFit.cover,
                   ),
-                ],
-              );
-            },
-          );
-        },
-      ),
+                ),
+              ),
+            ),
+            FootStands(width: width),
+            Scaffold(
+              backgroundColor: Colors.transparent,
+              body: AnimatedSwitcher(
+                duration: const Duration(milliseconds: 600),
+                child: switch (state) {
+                  MenuState.splash => const Splash(
+                      key: ValueKey(MenuState.splash),
+                    ),
+                  MenuState.userName => const Nickname(
+                      key: ValueKey(MenuState.userName),
+                    ),
+                },
+              ),
+            ),
+          ],
+        );
+      },
     );
   }
 }

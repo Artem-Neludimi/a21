@@ -4,8 +4,6 @@ import 'package:a21/menu.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-import 'widgets.dart';
-
 class Splash extends StatelessWidget {
   const Splash({super.key});
 
@@ -17,7 +15,6 @@ class Splash extends StatelessWidget {
         children: [
           const SizedBox(width: double.infinity, height: double.infinity),
           _Ball(width: width),
-          FootStands(width: width),
         ],
       );
     });
