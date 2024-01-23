@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:gradient_borders/gradient_borders.dart';
 
 class FootStands extends StatelessWidget {
   const FootStands({
@@ -68,6 +69,60 @@ class TextWithShadow extends StatelessWidget {
             blurRadius: 5,
           ),
         ],
+      ),
+    );
+  }
+}
+
+class AppButton extends StatelessWidget {
+  const AppButton({
+    super.key,
+    this.onTap,
+    this.height = 75,
+    this.width = 222,
+    required this.text,
+  });
+
+  final VoidCallback? onTap;
+  final double height;
+  final double width;
+  final String text;
+
+  @override
+  Widget build(BuildContext context) {
+    return GestureDetector(
+      onTap: onTap,
+      child: Container(
+        width: width,
+        height: height,
+        decoration: const BoxDecoration(
+          borderRadius: BorderRadius.all(Radius.circular(20)),
+          gradient: LinearGradient(
+            begin: Alignment.topCenter,
+            end: Alignment.bottomCenter,
+            colors: [
+              Color.fromRGBO(51, 195, 159, 1),
+              Color.fromRGBO(3, 122, 92, 1),
+            ],
+          ),
+          border: GradientBoxBorder(
+            width: 6,
+            gradient: LinearGradient(
+              begin: Alignment.topCenter,
+              end: Alignment.bottomCenter,
+              colors: [
+                Color.fromRGBO(196, 255, 239, 1),
+                Color.fromRGBO(0, 64, 46, 1),
+              ],
+            ),
+          ),
+        ),
+        child: Center(
+          child: TextWithShadow(
+            text,
+            fontSize: 33,
+          ),
+        ),
       ),
     );
   }

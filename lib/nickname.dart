@@ -33,63 +33,78 @@ class _NicknameState extends State<Nickname> {
             fontSize: 33,
           ),
           const SizedBox(height: 16),
-          ClipRRect(
+          _Field(controller: _controller),
+          const SizedBox(height: 80),
+          const AppButton(text: 'NEXT')
+        ],
+      ),
+    );
+  }
+}
+
+class _Field extends StatelessWidget {
+  const _Field({
+    required TextEditingController controller,
+  }) : _controller = controller;
+
+  final TextEditingController _controller;
+
+  @override
+  Widget build(BuildContext context) {
+    return ClipRRect(
+      borderRadius: BorderRadius.circular(25),
+      child: BackdropFilter(
+        filter: ImageFilter.blur(sigmaX: 20, sigmaY: 20),
+        child: Container(
+          width: double.infinity,
+          height: 88,
+          decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(25),
-            child: BackdropFilter(
-              filter: ImageFilter.blur(sigmaX: 20, sigmaY: 20),
-              child: Container(
-                width: double.infinity,
-                height: 88,
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(25),
-                  border: const GradientBoxBorder(
-                    width: 4,
-                    gradient: LinearGradient(
-                      colors: [
-                        Color.fromRGBO(75, 123, 134, 1),
-                        Color.fromRGBO(153, 191, 176, 1),
-                        Color.fromRGBO(75, 123, 134, 1),
-                      ],
-                    ),
-                  ),
-                  color: Colors.white.withOpacity(0.1),
-                ),
-                child: TextField(
-                  controller: _controller,
-                  onTapOutside: (_) => FocusManager.instance.primaryFocus?.unfocus(),
-                  style: const TextStyle(
-                    color: Colors.white,
-                    fontSize: 33,
-                    shadows: [
-                      Shadow(
-                        color: Colors.black,
-                        offset: Offset(1, 3),
-                        blurRadius: 5,
-                      ),
-                    ],
-                  ),
-                  decoration: const InputDecoration(
-                    border: OutlineInputBorder(
-                      borderSide: BorderSide.none,
-                    ),
-                    hintStyle: TextStyle(
-                      color: Colors.white,
-                      fontSize: 33,
-                      shadows: [
-                        Shadow(
-                          color: Colors.black,
-                          offset: Offset(1, 3),
-                          blurRadius: 5,
-                        ),
-                      ],
-                    ),
-                    hintText: 'Name',
-                  ),
-                ),
+            border: const GradientBoxBorder(
+              width: 4,
+              gradient: LinearGradient(
+                colors: [
+                  Color.fromRGBO(75, 123, 134, 1),
+                  Color.fromRGBO(153, 191, 176, 1),
+                  Color.fromRGBO(75, 123, 134, 1),
+                ],
               ),
             ),
+            color: Colors.white.withOpacity(0.1),
           ),
-        ],
+          child: TextField(
+            controller: _controller,
+            onTapOutside: (_) => FocusManager.instance.primaryFocus?.unfocus(),
+            style: const TextStyle(
+              color: Colors.white,
+              fontSize: 33,
+              shadows: [
+                Shadow(
+                  color: Colors.black,
+                  offset: Offset(1, 3),
+                  blurRadius: 5,
+                ),
+              ],
+            ),
+            decoration: const InputDecoration(
+              border: OutlineInputBorder(
+                borderSide: BorderSide.none,
+              ),
+              hintStyle: TextStyle(
+                color: Colors.white,
+                fontSize: 33,
+                shadows: [
+                  Shadow(
+                    color: Colors.black,
+                    offset: Offset(1, 3),
+                    blurRadius: 5,
+                  ),
+                ],
+              ),
+              hintText: 'Name',
+            ),
+          ),
+        ),
       ),
     );
   }
