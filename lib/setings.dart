@@ -5,6 +5,7 @@ import 'package:a21/widgets.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:gradient_borders/box_borders/gradient_box_border.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class Settings extends StatelessWidget {
   const Settings({super.key});
@@ -24,33 +25,47 @@ class Settings extends StatelessWidget {
               height: 70,
               child: Image.asset('assets/images/back.png'),
             ),
-            const Center(
+            Center(
               child: SizedBox(
                 width: double.infinity,
                 child: Padding(
-                  padding: EdgeInsets.symmetric(horizontal: 16),
+                  padding: const EdgeInsets.symmetric(horizontal: 16),
                   child: _Board(
                     child: Column(
                       mainAxisSize: MainAxisSize.min,
                       children: [
-                        _Music(),
+                        const _Music(),
                         Padding(
-                          padding: EdgeInsets.fromLTRB(16, 32, 16, 0),
+                          padding: const EdgeInsets.fromLTRB(16, 32, 16, 0),
                           child: AppButton(
+                            onTap: () {
+                              launchUrl(
+                                Uri.parse(
+                                  'https://google.com',
+                                ),
+                              );
+                            },
                             text: 'PRIVATE POLICY',
                             width: double.infinity,
                             fontSize: 26,
                           ),
                         ),
                         Padding(
-                          padding: EdgeInsets.fromLTRB(16, 32, 16, 0),
+                          padding: const EdgeInsets.fromLTRB(16, 32, 16, 0),
                           child: AppButton(
+                            onTap: () {
+                              launchUrl(
+                                Uri.parse(
+                                  'https://google.com',
+                                ),
+                              );
+                            },
                             text: 'TERMS OF USE',
                             width: double.infinity,
                             fontSize: 26,
                           ),
                         ),
-                        Padding(
+                        const Padding(
                           padding: EdgeInsets.fromLTRB(16, 32, 16, 16),
                           child: AppButton(
                             text: 'SHARE APP',
