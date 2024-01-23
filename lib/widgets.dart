@@ -83,12 +83,16 @@ class AppButton extends StatelessWidget {
     this.height = 75,
     this.width = 222,
     required this.text,
+    this.child,
+    this.fontSize = 33,
   });
 
   final VoidCallback? onTap;
   final double height;
   final double width;
   final String text;
+  final Widget? child;
+  final double fontSize;
 
   @override
   Widget build(BuildContext context) {
@@ -119,12 +123,13 @@ class AppButton extends StatelessWidget {
             ),
           ),
         ),
-        child: Center(
-          child: TextWithShadow(
-            text,
-            fontSize: 33,
-          ),
-        ),
+        child: child ??
+            Center(
+              child: TextWithShadow(
+                text,
+                fontSize: fontSize,
+              ),
+            ),
       ),
     );
   }

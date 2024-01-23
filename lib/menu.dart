@@ -18,7 +18,10 @@ class Menu extends StatelessWidget {
             const SizedBox(height: 24),
             const AppButton(text: 'SHOP'),
             const SizedBox(height: 24),
-            const AppButton(text: 'SETTINGS'),
+            AppButton(
+              onTap: () => context.read<MenuCubit>().toSettings(),
+              text: 'SETTINGS',
+            ),
             const SizedBox(height: 24),
             const AppButton(text: 'RATING'),
             const SizedBox(height: 24),

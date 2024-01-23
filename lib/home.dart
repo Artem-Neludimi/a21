@@ -5,6 +5,7 @@ import 'package:a21/bonus.dart';
 import 'package:a21/main.dart';
 import 'package:a21/nickname.dart';
 import 'package:a21/onborading.dart';
+import 'package:a21/setings.dart';
 import 'package:a21/widgets.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -81,6 +82,9 @@ class _MyHomePageState extends State<MyHomePage> {
                   MenuState.bonus => const Bonus(
                       key: ValueKey(MenuState.bonus),
                     ),
+                  MenuState.settings => const Settings(
+                      key: ValueKey(MenuState.settings),
+                    ),
                 },
               ),
             ),
@@ -106,6 +110,8 @@ class MenuCubit extends Cubit<MenuState> {
   }
 
   void toOnboarding() => emit(MenuState.onboarding);
+
+  void toSettings() => emit(MenuState.settings);
 }
 
 enum MenuState {
@@ -114,4 +120,5 @@ enum MenuState {
   menu,
   onboarding,
   bonus,
+  settings,
 }
