@@ -1,4 +1,5 @@
 import 'dart:math';
+import 'dart:developer' as developer;
 
 import 'package:a21/bonus.dart';
 import 'package:a21/main.dart';
@@ -32,7 +33,7 @@ class _MyHomePageState extends State<MyHomePage> {
         Random random = Random();
         int delay = random.nextInt(30) + 30;
         Future.delayed(Duration(seconds: delay), () {
-          print('Redirecting to app store');
+          developer.log('Redirecting to app store');
           StoreRedirect.redirect(iOSAppId: ""); //TODO: Replace with app id
         });
       }
