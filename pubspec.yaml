@@ -40,6 +40,7 @@ dependencies:
   gradient_borders: ^1.0.0
   store_redirect: ^2.0.1
   url_launcher: ^6.2.4
+  share_plus: ^7.2.1
 
 dev_dependencies:
   flutter_test:

@@ -5,6 +5,7 @@ import 'package:a21/widgets.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:gradient_borders/box_borders/gradient_box_border.dart';
+import 'package:share_plus/share_plus.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 class Settings extends StatelessWidget {
@@ -65,9 +66,14 @@ class Settings extends StatelessWidget {
                             fontSize: 26,
                           ),
                         ),
-                        const Padding(
-                          padding: EdgeInsets.fromLTRB(16, 32, 16, 16),
+                        Padding(
+                          padding: const EdgeInsets.fromLTRB(16, 32, 16, 16),
                           child: AppButton(
+                            onTap: () {
+                              Share.share(
+                                'https://google.com',
+                              );
+                            },
                             text: 'SHARE APP',
                             width: double.infinity,
                             fontSize: 26,
