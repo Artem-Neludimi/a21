@@ -67,30 +67,64 @@ class _MyAppState extends State<MyApp> {
 class AppCubit extends Cubit<AppState> {
   AppCubit()
       : super(
-          const AppState(
+          AppState(
             nickName: '',
+            score: 0,
+            leaderBoard: [
+              for (int i = 0; i < 99; i++)
+                (
+                  'PLAYER#${generatePlayerRandomNumber()}',
+                  generateScoreRandomNumber(),
+                ),
+            ],
           ),
         );
+
   setNickName(String nickName) {
     String name = nickName;
     if (name.isEmpty) {
-      final randomNumber = Random().nextInt(900000) + 100000;
-      name = 'PLAYER#$randomNumber';
+      name = 'PLAYER#${generatePlayerRandomNumber()}';
     }
     emit(state.copyWith(nickName: name));
   }
 }
 
 class AppState {
-  const AppState({this.nickName});
+  const AppState({
+    required this.nickName,
+    required this.score,
+    required this.leaderBoard,
+  });
 
-  final String? nickName;
+  final String nickName;
+  final int score;
+  final List<(String, int)> leaderBoard;
+
+  List<(String, int)> get sortedLeaderBoard {
+    final sorted = [...leaderBoard, (nickName, score)];
+    sorted.sort((a, b) => b.$2.compareTo(a.$2));
+    return sorted;
+  }
 
   AppState copyWith({
     String? nickName,
+    int? score,
+    List<(String, int)>? leaderBoard,
   }) {
     return AppState(
       nickName: nickName ?? this.nickName,
+      score: score ?? this.score,
+      leaderBoard: leaderBoard ?? this.leaderBoard,
     );
   }
+}
+
+int generatePlayerRandomNumber() {
+  final randomNumber = Random().nextInt(900000) + 100000;
+  return randomNumber;
+}
+
+int generateScoreRandomNumber() {
+  final randomNumber = Random().nextInt(1000);
+  return randomNumber;
 }

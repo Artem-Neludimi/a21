@@ -141,9 +141,13 @@ class Board extends StatelessWidget {
   const Board({
     super.key,
     required this.child,
+    this.border,
+    this.padding = const EdgeInsets.all(16),
   });
 
   final Widget child;
+  final GradientBoxBorder? border;
+  final EdgeInsets padding;
 
   @override
   Widget build(BuildContext context) {
@@ -152,21 +156,21 @@ class Board extends StatelessWidget {
       child: BackdropFilter(
         filter: ImageFilter.blur(sigmaX: 16, sigmaY: 16),
         child: Container(
-          padding: const EdgeInsets.all(16),
+          padding: padding,
           decoration: BoxDecoration(
-            color: Colors.white.withOpacity(0.1),
-            borderRadius: const BorderRadius.all(Radius.circular(16)),
-            border: const GradientBoxBorder(
-              width: 3,
-              gradient: LinearGradient(
-                colors: [
-                  Color.fromRGBO(183, 183, 183, 0.32),
-                  Color.fromRGBO(255, 255, 255, 0.5),
-                  Color.fromRGBO(183, 183, 183, 0.32),
-                ],
-              ),
-            ),
-          ),
+              color: Colors.white.withOpacity(0.1),
+              borderRadius: const BorderRadius.all(Radius.circular(16)),
+              border: border ??
+                  const GradientBoxBorder(
+                    width: 3,
+                    gradient: LinearGradient(
+                      colors: [
+                        Color.fromRGBO(183, 183, 183, 0.32),
+                        Color.fromRGBO(255, 255, 255, 0.5),
+                        Color.fromRGBO(183, 183, 183, 0.32),
+                      ],
+                    ),
+                  )),
           child: child,
         ),
       ),

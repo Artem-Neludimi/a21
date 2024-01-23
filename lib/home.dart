@@ -5,6 +5,7 @@ import 'package:a21/bonus.dart';
 import 'package:a21/main.dart';
 import 'package:a21/nickname.dart';
 import 'package:a21/onborading.dart';
+import 'package:a21/rating.dart';
 import 'package:a21/setings.dart';
 import 'package:a21/widgets.dart';
 import 'package:flutter/material.dart';
@@ -89,6 +90,9 @@ class _MyHomePageState extends State<MyHomePage> {
                   MenuState.howToPlay => const HowToPlay(
                       key: ValueKey(MenuState.howToPlay),
                     ),
+                  MenuState.rating => const Rating(
+                      key: ValueKey(MenuState.rating),
+                    ),
                 },
               ),
             ),
@@ -118,6 +122,8 @@ class MenuCubit extends Cubit<MenuState> {
   void toSettings() => emit(MenuState.settings);
 
   void toHowToPlay() => emit(MenuState.howToPlay);
+
+  void toRating() => emit(MenuState.rating);
 }
 
 enum MenuState {
@@ -128,4 +134,5 @@ enum MenuState {
   bonus,
   settings,
   howToPlay,
+  rating,
 }

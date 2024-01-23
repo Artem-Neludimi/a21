@@ -23,7 +23,10 @@ class Menu extends StatelessWidget {
               text: 'SETTINGS',
             ),
             const SizedBox(height: 24),
-            const AppButton(text: 'RATING'),
+            AppButton(
+              onTap: () => context.read<MenuCubit>().toRating(),
+              text: 'RATING',
+            ),
             const SizedBox(height: 24),
             AppButton(
               onTap: () => context.read<MenuCubit>().toHowToPlay(),
