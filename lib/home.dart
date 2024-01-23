@@ -87,7 +87,12 @@ class MenuCubit extends Cubit<MenuState> {
 
   void toUserName(MenuState state) => emit(MenuState.userName);
   void tryGoToMenu() {
-    emit(MenuState.menu);
+    final firstTime = prefs.getBool('firstTime')!;
+    if (firstTime) {
+      emit(MenuState.onboarding);
+    } else {
+      emit(MenuState.menu);
+    }
   }
 }
 

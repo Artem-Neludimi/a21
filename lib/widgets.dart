@@ -45,11 +45,13 @@ class TextWithShadow extends StatelessWidget {
     this.text, {
     super.key,
     this.fontSize,
+    this.fontWeight = FontWeight.w600,
     this.color = Colors.white,
     this.shadowColor = Colors.black,
   });
   final String text;
   final double? fontSize;
+  final FontWeight fontWeight;
   final Color color;
   final Color shadowColor;
 
@@ -60,7 +62,7 @@ class TextWithShadow extends StatelessWidget {
       textAlign: TextAlign.center,
       style: TextStyle(
         color: color,
-        fontWeight: FontWeight.w600,
+        fontWeight: fontWeight,
         fontSize: fontSize,
         shadows: [
           Shadow(
