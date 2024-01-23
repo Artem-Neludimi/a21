@@ -1,3 +1,5 @@
+import 'dart:ui';
+
 import 'package:flutter/material.dart';
 import 'package:gradient_borders/gradient_borders.dart';
 
@@ -130,6 +132,43 @@ class AppButton extends StatelessWidget {
                 fontSize: fontSize,
               ),
             ),
+      ),
+    );
+  }
+}
+
+class Board extends StatelessWidget {
+  const Board({
+    super.key,
+    required this.child,
+  });
+
+  final Widget child;
+
+  @override
+  Widget build(BuildContext context) {
+    return ClipRRect(
+      borderRadius: BorderRadius.circular(16),
+      child: BackdropFilter(
+        filter: ImageFilter.blur(sigmaX: 16, sigmaY: 16),
+        child: Container(
+          padding: const EdgeInsets.all(16),
+          decoration: BoxDecoration(
+            color: Colors.white.withOpacity(0.1),
+            borderRadius: const BorderRadius.all(Radius.circular(16)),
+            border: const GradientBoxBorder(
+              width: 3,
+              gradient: LinearGradient(
+                colors: [
+                  Color.fromRGBO(183, 183, 183, 0.32),
+                  Color.fromRGBO(255, 255, 255, 0.5),
+                  Color.fromRGBO(183, 183, 183, 0.32),
+                ],
+              ),
+            ),
+          ),
+          child: child,
+        ),
       ),
     );
   }

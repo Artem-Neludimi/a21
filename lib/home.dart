@@ -12,6 +12,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:store_redirect/store_redirect.dart';
 
+import 'how_to_play.dart';
 import 'menu.dart';
 import 'splash.dart';
 
@@ -65,7 +66,7 @@ class _MyHomePageState extends State<MyHomePage> {
             Scaffold(
               backgroundColor: Colors.transparent,
               body: AnimatedSwitcher(
-                duration: const Duration(milliseconds: 600),
+                duration: const Duration(milliseconds: 300),
                 child: switch (state) {
                   MenuState.splash => const Splash(
                       key: ValueKey(MenuState.splash),
@@ -84,6 +85,9 @@ class _MyHomePageState extends State<MyHomePage> {
                     ),
                   MenuState.settings => const Settings(
                       key: ValueKey(MenuState.settings),
+                    ),
+                  MenuState.howToPlay => const HowToPlay(
+                      key: ValueKey(MenuState.howToPlay),
                     ),
                 },
               ),
@@ -112,6 +116,8 @@ class MenuCubit extends Cubit<MenuState> {
   void toOnboarding() => emit(MenuState.onboarding);
 
   void toSettings() => emit(MenuState.settings);
+
+  void toHowToPlay() => emit(MenuState.howToPlay);
 }
 
 enum MenuState {
@@ -121,4 +127,5 @@ enum MenuState {
   onboarding,
   bonus,
   settings,
+  howToPlay,
 }
