@@ -27,10 +27,26 @@ class Rating extends StatelessWidget {
   }
 }
 
-class _Board extends StatelessWidget {
+class _Board extends StatefulWidget {
   const _Board({
     super.key,
   });
+
+  @override
+  State<_Board> createState() => _BoardState();
+}
+
+class _BoardState extends State<_Board> {
+  bool loading = true;
+  @override
+  void initState() {
+    Future.delayed(const Duration(milliseconds: 1000), () {
+      setState(() {
+        loading = false;
+      });
+    });
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -51,116 +67,120 @@ class _Board extends StatelessWidget {
                   ],
                 ),
               ),
-              child: ListView.separated(
-                itemCount: state.sortedLeaderBoard.length + 1,
-                separatorBuilder: (_, __) => const SizedBox(height: 16),
-                itemBuilder: (context, index) {
-                  index -= 1;
-                  if (index < 0) {
-                    return const SizedBox(
-                      height: 65,
-                      child: Board(
-                        padding: EdgeInsets.all(6),
-                        child: Row(
-                          children: [
-                            Expanded(
-                              flex: 1,
-                              child: Align(
-                                alignment: Alignment.centerLeft,
-                                child: _Text('RANK'),
-                              ),
-                            ),
-                            Expanded(
-                              flex: 1,
-                              child: Align(
-                                child: _Text('NAME'),
-                              ),
-                            ),
-                            Expanded(
-                              flex: 1,
-                              child: Align(
-                                alignment: Alignment.centerRight,
-                                child: _Text('SCORES'),
-                              ),
-                            ),
-                          ],
-                        ),
-                      ),
-                    );
-                  }
-                  return SizedBox(
-                    height: 65,
-                    child: Board(
-                      border: state.nickName == state.sortedLeaderBoard[index].$1
-                          ? const GradientBoxBorder(
-                              width: 2,
-                              gradient: LinearGradient(
-                                begin: Alignment.topCenter,
-                                end: Alignment.bottomCenter,
-                                colors: [
-                                  Color.fromRGBO(241, 218, 122, 1),
-                                  Color.fromRGBO(219, 192, 98, 1),
+              child: loading
+                  ? const Center(
+                      child: CircularProgressIndicator.adaptive(),
+                    )
+                  : ListView.separated(
+                      itemCount: state.sortedLeaderBoard.length + 1,
+                      separatorBuilder: (_, __) => const SizedBox(height: 16),
+                      itemBuilder: (context, index) {
+                        index -= 1;
+                        if (index < 0) {
+                          return const SizedBox(
+                            height: 65,
+                            child: Board(
+                              padding: EdgeInsets.all(6),
+                              child: Row(
+                                children: [
+                                  Expanded(
+                                    flex: 1,
+                                    child: Align(
+                                      alignment: Alignment.centerLeft,
+                                      child: _Text('RANK'),
+                                    ),
+                                  ),
+                                  Expanded(
+                                    flex: 1,
+                                    child: Align(
+                                      child: _Text('NAME'),
+                                    ),
+                                  ),
+                                  Expanded(
+                                    flex: 1,
+                                    child: Align(
+                                      alignment: Alignment.centerRight,
+                                      child: _Text('SCORES'),
+                                    ),
+                                  ),
                                 ],
                               ),
-                            )
-                          : null,
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        crossAxisAlignment: CrossAxisAlignment.center,
-                        children: [
-                          Expanded(
-                            flex: 2,
+                            ),
+                          );
+                        }
+                        return SizedBox(
+                          height: 65,
+                          child: Board(
+                            border: state.nickName == state.sortedLeaderBoard[index].$1
+                                ? const GradientBoxBorder(
+                                    width: 2,
+                                    gradient: LinearGradient(
+                                      begin: Alignment.topCenter,
+                                      end: Alignment.bottomCenter,
+                                      colors: [
+                                        Color.fromRGBO(241, 218, 122, 1),
+                                        Color.fromRGBO(219, 192, 98, 1),
+                                      ],
+                                    ),
+                                  )
+                                : null,
                             child: Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              crossAxisAlignment: CrossAxisAlignment.center,
                               children: [
                                 Expanded(
-                                  flex: 3,
-                                  child: Align(
-                                    alignment: Alignment.centerLeft,
-                                    child: _Text('#${index + 1}'),
-                                  ),
-                                ),
-                                Expanded(
-                                  flex: 4,
-                                  child: Stack(
-                                    clipBehavior: Clip.none,
+                                  flex: 2,
+                                  child: Row(
                                     children: [
-                                      const SizedBox(width: double.infinity, height: double.infinity),
-                                      Positioned(
-                                        top: -10,
-                                        bottom: -10,
-                                        child: Image.asset(
-                                          state.nickName == state.sortedLeaderBoard[index].$1
-                                              ? 'assets/images/user_golden.png'
-                                              : 'assets/images/user_green.png',
-                                          fit: BoxFit.fitHeight,
+                                      Expanded(
+                                        flex: 3,
+                                        child: Align(
+                                          alignment: Alignment.centerLeft,
+                                          child: _Text('#${index + 1}'),
+                                        ),
+                                      ),
+                                      Expanded(
+                                        flex: 4,
+                                        child: Stack(
+                                          clipBehavior: Clip.none,
+                                          children: [
+                                            const SizedBox(width: double.infinity, height: double.infinity),
+                                            Positioned(
+                                              top: -10,
+                                              bottom: -10,
+                                              child: Image.asset(
+                                                state.nickName == state.sortedLeaderBoard[index].$1
+                                                    ? 'assets/images/user_golden.png'
+                                                    : 'assets/images/user_green.png',
+                                                fit: BoxFit.fitHeight,
+                                              ),
+                                            ),
+                                          ],
                                         ),
                                       ),
                                     ],
                                   ),
                                 ),
+                                Expanded(
+                                  flex: 3,
+                                  child: FittedBox(
+                                    child: _Text(state.sortedLeaderBoard[index].$1),
+                                  ),
+                                ),
+                                Expanded(
+                                  child: Align(
+                                    alignment: Alignment.centerRight,
+                                    child: _Text(
+                                      state.sortedLeaderBoard[index].$2.toString(),
+                                    ),
+                                  ),
+                                ),
                               ],
                             ),
                           ),
-                          Expanded(
-                            flex: 3,
-                            child: FittedBox(
-                              child: _Text(state.sortedLeaderBoard[index].$1),
-                            ),
-                          ),
-                          Expanded(
-                            child: Align(
-                              alignment: Alignment.centerRight,
-                              child: _Text(
-                                state.sortedLeaderBoard[index].$2.toString(),
-                              ),
-                            ),
-                          ),
-                        ],
-                      ),
+                        );
+                      },
                     ),
-                  );
-                },
-              ),
             ),
           ),
         );
