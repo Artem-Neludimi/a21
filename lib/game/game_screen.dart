@@ -92,9 +92,9 @@ class MyGame extends FlameGame with PanDetector {
 
   void _manageFootAngle() {
     if (_isTap && boot.angle <= 0) {
-      boot.angle += 0.03;
+      boot.angle += 0.025;
     } else if (!_isTap && boot.angle >= -0.5) {
-      boot.angle -= 0.03;
+      boot.angle -= 0.025;
     }
   }
 }
