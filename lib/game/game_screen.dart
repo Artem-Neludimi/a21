@@ -1,5 +1,4 @@
-import 'dart:math';
-
+import 'package:a21/game/background.dart';
 import 'package:flame/collisions.dart';
 import 'package:flame/components.dart';
 import 'package:flame/events.dart';
@@ -45,6 +44,7 @@ class MyGame extends FlameGame with PanDetector, HasCollisionDetection {
 
   //boot state
   bool _isTap = false;
+  Vector2 bootPosition = Vector2.zero();
 
   //ball state
 
@@ -54,6 +54,7 @@ class MyGame extends FlameGame with PanDetector, HasCollisionDetection {
       BackGround(),
       _ball = BallSprite(),
       _boot = BootSprite(),
+      ScreenHitbox(),
     ]);
     _boot.angle = -0.5;
   }
@@ -74,6 +75,7 @@ class MyGame extends FlameGame with PanDetector, HasCollisionDetection {
 
   @override
   void onPanUpdate(DragUpdateInfo info) {
+    bootPosition = info.eventPosition.global;
     _provideBootPosition(info.eventPosition.global);
     super.onPanUpdate(info);
   }
@@ -81,6 +83,7 @@ class MyGame extends FlameGame with PanDetector, HasCollisionDetection {
   @override
   void onPanEnd(DragEndInfo info) {
     _isTap = false;
+    bootPosition = Vector2.zero();
     super.onPanEnd(info);
   }
 
@@ -107,21 +110,11 @@ class MyGame extends FlameGame with PanDetector, HasCollisionDetection {
   }
 }
 
-class BackGround extends SpriteComponent with HasGameRef<MyGame> {
-  BackGround() : super(priority: 0);
-
-  @override
-  Future<void> onLoad() async {
-    sprite = await Sprite.load(
-      'bg_1.png',
-      srcPosition: Vector2(50, 50),
-    );
-    add(ScreenHitbox());
-  }
-}
-
 class BallSprite extends SpriteComponent with HasGameRef<MyGame>, CollisionCallbacks {
   BallSprite() : super(priority: 1);
+
+  double speed = 0;
+  Vector2 direction = Vector2.zero();
 
   @override
   Future<void> onLoad() async {
@@ -129,20 +122,38 @@ class BallSprite extends SpriteComponent with HasGameRef<MyGame>, CollisionCallb
     size = Vector2(100, 100);
     position = Vector2(
       gameRef.size.x / 2 - 50,
-      gameRef.size.y / 1.7 - 50,
+      gameRef.size.y / 3 - 50,
     );
     sprite = ball;
-    add(CircleHitbox(radius: 100));
+    add(CircleHitbox(
+      radius: 50,
+    ));
+  }
+
+  @override
+  void update(double dt) {
+    position -= direction * speed * dt;
+    if (speed > 0) {
+      speed -= 35;
+      // angle -= 0.001;
+    }
+
+    super.update(dt);
   }
 
   @override
   void onCollision(Set<Vector2> intersectionPoints, PositionComponent other) {
     if (other is BootSprite) {
-      print('collision with boot');
+      speed = 1200;
+      direction.y = 2;
+      direction.x = other.position.x < position.x ? 1 : -1;
     }
     if (other is ScreenHitbox) {
-      print('collision with screen');
+      speed = 900;
+      direction.y = other.position.y < position.y ? 1 : -1;
+      direction.x = other.position.x < position.x ? 1 : -1;
     }
+
     super.onCollision(intersectionPoints, other);
   }
 }
@@ -163,8 +174,8 @@ class BootSprite extends SpriteComponent with HasGameRef<MyGame> {
       gameRef.size.x / 2.5 - 50,
       gameRef.size.y / 1.2 - 50,
     );
-    add(RectangleHitbox(
-      size: Vector2(157, 100),
+    add(CircleHitbox(
+      radius: 50,
     ));
   }
 }
