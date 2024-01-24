@@ -38,8 +38,8 @@ class _GameScreenState extends State<GameScreen> {
 class MyGame extends FlameGame with PanDetector {
   MyGame();
 
-  late BallSprite ball;
-  late BootSprite boot;
+  late BallSprite _ball;
+  late BootSprite _boot;
 
   bool _isTap = false;
 
@@ -47,10 +47,10 @@ class MyGame extends FlameGame with PanDetector {
   Future<void> onLoad() async {
     addAll([
       BackGround(),
-      ball = BallSprite(),
-      boot = BootSprite(),
+      _ball = BallSprite(),
+      _boot = BootSprite(),
     ]);
-    boot.angle = -0.5;
+    _boot.angle = -0.5;
   }
 
   @override
@@ -80,21 +80,21 @@ class MyGame extends FlameGame with PanDetector {
   }
 
   void _manageBallPosition(double dt) {
-    ball.position -= Vector2(0, -1) * dt * 300;
+    _ball.position -= Vector2(0, -1) * dt * 300;
   }
 
   void _provideBootPosition(Vector2 position) {
-    boot.position = Vector2(
-      position.x - boot.size.x / 2,
-      position.y - boot.size.y / 2,
+    _boot.position = Vector2(
+      position.x - _boot.size.x / 2,
+      position.y - _boot.size.y / 2,
     );
   }
 
   void _manageFootAngle() {
-    if (_isTap && boot.angle <= 0) {
-      boot.angle += 0.025;
-    } else if (!_isTap && boot.angle >= -0.5) {
-      boot.angle -= 0.025;
+    if (_isTap && _boot.angle <= 0) {
+      _boot.angle += 0.025;
+    } else if (!_isTap && _boot.angle >= -0.5) {
+      _boot.angle -= 0.025;
     }
   }
 }
