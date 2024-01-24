@@ -41,6 +41,8 @@ class MyGame extends FlameGame with PanDetector {
   late BallSprite ball;
   late BootSprite boot;
 
+  bool _isTap = false;
+
   @override
   Future<void> onLoad() async {
     addAll([
@@ -52,37 +54,47 @@ class MyGame extends FlameGame with PanDetector {
   }
 
   @override
+  void update(double dt) {
+    _manageBallPosition(dt);
+    _manageFootAngle();
+    super.update(dt);
+  }
+
+  @override
   void onPanStart(DragStartInfo info) {
-    animateBootAngle();
+    _provideBootPosition(info.eventPosition.global);
+    _isTap = true;
     super.onPanStart(info);
   }
 
   @override
   void onPanUpdate(DragUpdateInfo info) {
-    boot.position = Vector2(
-      info.eventPosition.global.x - boot.size.x / 2,
-      info.eventPosition.global.y - boot.size.y / 2,
-    );
+    _provideBootPosition(info.eventPosition.global);
     super.onPanUpdate(info);
   }
 
   @override
   void onPanEnd(DragEndInfo info) {
-    animateBackBootAngle();
+    _isTap = false;
     super.onPanEnd(info);
   }
 
-  Future<void> animateBootAngle() async {
-    for (var i = 0; i < 10; i++) {
-      await Future.delayed(const Duration(milliseconds: 10));
-      boot.angle -= 0.05;
-    }
+  void _manageBallPosition(double dt) {
+    ball.position -= Vector2(0, -1) * dt * 300;
   }
 
-  Future<void> animateBackBootAngle() async {
-    for (var i = 0; i < 10; i++) {
-      await Future.delayed(const Duration(milliseconds: 10));
-      boot.angle += 0.05;
+  void _provideBootPosition(Vector2 position) {
+    boot.position = Vector2(
+      position.x - boot.size.x / 2,
+      position.y - boot.size.y / 2,
+    );
+  }
+
+  void _manageFootAngle() {
+    if (_isTap && boot.angle <= 0) {
+      boot.angle += 0.03;
+    } else if (!_isTap && boot.angle >= -0.5) {
+      boot.angle -= 0.03;
     }
   }
 }
@@ -111,12 +123,6 @@ class BallSprite extends SpriteComponent with HasGameRef<MyGame>, CollisionCallb
       gameRef.size.y / 1.7 - 50,
     );
     sprite = ball;
-  }
-
-  @override
-  void update(double dt) {
-    position -= Vector2(0, -1) * dt * 300;
-    super.update(dt);
   }
 }
 
