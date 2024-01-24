@@ -1,6 +1,8 @@
 import 'package:flame/collisions.dart';
 import 'package:flame/components.dart';
+import 'package:flame/events.dart';
 import 'package:flame/game.dart';
+import 'package:flame/input.dart';
 import 'package:flutter/material.dart';
 
 class GameScreen extends StatefulWidget {
@@ -33,7 +35,7 @@ class _GameScreenState extends State<GameScreen> {
   }
 }
 
-class MyGame extends FlameGame {
+class MyGame extends FlameGame with PanDetector {
   MyGame();
 
   late BallSprite ball;
@@ -46,6 +48,42 @@ class MyGame extends FlameGame {
       ball = BallSprite(),
       boot = BootSprite(),
     ]);
+    boot.angle = -0.5;
+  }
+
+  @override
+  void onPanStart(DragStartInfo info) {
+    animateBootAngle();
+    super.onPanStart(info);
+  }
+
+  @override
+  void onPanUpdate(DragUpdateInfo info) {
+    boot.position = Vector2(
+      info.eventPosition.global.x - boot.size.x / 2,
+      info.eventPosition.global.y - boot.size.y / 2,
+    );
+    super.onPanUpdate(info);
+  }
+
+  @override
+  void onPanEnd(DragEndInfo info) {
+    animateBackBootAngle();
+    super.onPanEnd(info);
+  }
+
+  Future<void> animateBootAngle() async {
+    for (var i = 0; i < 10; i++) {
+      await Future.delayed(const Duration(milliseconds: 10));
+      boot.angle -= 0.05;
+    }
+  }
+
+  Future<void> animateBackBootAngle() async {
+    for (var i = 0; i < 10; i++) {
+      await Future.delayed(const Duration(milliseconds: 10));
+      boot.angle += 0.05;
+    }
   }
 }
 
@@ -94,6 +132,5 @@ class BootSprite extends SpriteComponent with HasGameRef<MyGame>, CollisionCallb
       gameRef.size.y / 1.7 - 50,
     );
     sprite = boot;
-    angle = -0.5;
   }
 }
