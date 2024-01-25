@@ -89,26 +89,28 @@ class _GamePresentationState extends State<_GamePresentation> {
                     },
                   ),
                   const Spacer(),
-                  GestureDetector(
-                    onTap: () {
-                      context.read<GameBloc>().add(GameAddLive());
-                      context.read<AppCubit>().subtractLive();
-                    },
-                    child: Board(
+                  if (state.isLose)
+                    GestureDetector(
+                      onTap: () {
+                        context.read<GameBloc>().add(GameAddLive());
+                        context.read<AppCubit>().subtractLive();
+                      },
                       child: Stack(
                         clipBehavior: Clip.none,
                         children: [
-                          const Row(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            mainAxisSize: MainAxisSize.min,
-                            children: [
-                              TextWithShadow(
-                                '+',
-                                fontSize: 33,
-                              ),
-                              SizedBox(width: 3),
-                              Icon(Icons.favorite, size: 50),
-                            ],
+                          const Board(
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              mainAxisSize: MainAxisSize.min,
+                              children: [
+                                TextWithShadow(
+                                  '+',
+                                  fontSize: 33,
+                                ),
+                                SizedBox(width: 3),
+                                Icon(Icons.favorite, size: 50),
+                              ],
+                            ),
                           ),
                           Positioned(
                             top: -15,
@@ -129,8 +131,41 @@ class _GamePresentationState extends State<_GamePresentation> {
                           ),
                         ],
                       ),
+                    )
+                  else
+                    GestureDetector(
+                      onTap: () {
+                        if (context.read<GameBloc>().state.multipliedScore) return;
+                        context.read<AppCubit>().addScore(state.score);
+                        context.read<GameBloc>().add(GameMultiplyScore());
+                      },
+                      child: Stack(
+                        clipBehavior: Clip.none,
+                        children: [
+                          Board(
+                            padding: const EdgeInsets.only(top: 8, left: 4),
+                            child: Image.asset('assets/images/double.png'),
+                          ),
+                          Positioned(
+                            top: -15,
+                            right: -15,
+                            child: Container(
+                              width: 33,
+                              height: 33,
+                              decoration: BoxDecoration(
+                                color: Colors.black.withOpacity(0.4),
+                                borderRadius: BorderRadius.circular(100),
+                              ),
+                              child: FittedBox(
+                                child: TextWithShadow(
+                                  context.read<AppCubit>().state.scoreMultipliers.toString(),
+                                ),
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
                     ),
-                  ),
                   const SizedBox(height: 24),
                   const _Score(),
                   const SizedBox(height: 40),
