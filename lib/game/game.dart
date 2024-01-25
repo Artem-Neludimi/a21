@@ -7,12 +7,14 @@ import 'package:flame/events.dart';
 import 'package:flame/game.dart';
 import 'package:flame/input.dart';
 
+import 'boot.dart';
+
 class MyGame extends FlameGame with PanDetector, HasCollisionDetection {
   final AppBloc bloc;
   MyGame(this.bloc);
 
   late BootSprite boot;
-  late BallSprite _ball;
+  late BallSprite ball;
 
   //game state
   bool isStarted = false;
@@ -25,18 +27,11 @@ class MyGame extends FlameGame with PanDetector, HasCollisionDetection {
   Future<void> onLoad() async {
     addAll([
       BackGround(),
-      _ball = BallSprite(),
+      ball = BallSprite(),
       boot = BootSprite(),
       TimerText(),
     ]);
-    boot.angle = -0.5;
     super.onLoad();
-  }
-
-  @override
-  void update(double dt) {
-    _manageFootAngle();
-    super.update(dt);
   }
 
   @override
@@ -66,14 +61,6 @@ class MyGame extends FlameGame with PanDetector, HasCollisionDetection {
       position.x - boot.size.x / 2,
       position.y - boot.size.y / 2,
     );
-  }
-
-  void _manageFootAngle() {
-    if (isTap && boot.angle <= 0) {
-      boot.angle += 0.025;
-    } else if (!isTap && boot.angle >= -0.5) {
-      boot.angle -= 0.025;
-    }
   }
 }
 
@@ -128,30 +115,5 @@ class BallSprite extends SpriteComponent with HasGameRef<MyGame>, CollisionCallb
     }
 
     super.onCollision(intersectionPoints, other);
-  }
-}
-
-class BootSprite extends SpriteComponent with HasGameRef<MyGame> {
-  BootSprite() : super(priority: 1);
-
-  @override
-  Future<void> onLoad() async {
-    final boot = await gameRef.loadSprite('boot_1.png');
-    size = Vector2(157, 100);
-    position = Vector2(
-      gameRef.size.x / 2 - 50,
-      gameRef.size.y / 1.7 - 50,
-    );
-    sprite = boot;
-    position = Vector2(
-      gameRef.size.x / 2.5 - 50,
-      gameRef.size.y / 1.2 - 50,
-    );
-    add(PolygonHitbox([
-      Vector2(0, 60),
-      Vector2(0, size.y),
-      Vector2(size.x - 20, size.y - 20),
-      Vector2(size.x - 40, 0),
-    ]));
   }
 }
