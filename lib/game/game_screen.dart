@@ -41,11 +41,9 @@ class MyGame extends FlameGame with PanDetector, HasCollisionDetection {
   MyGame();
 
   late BootSprite _boot;
-  late BallSprite _ball;
-  late TimerText _timer;
 
   //game state
-  String time = '3';
+  bool isStarted = false;
 
   //boot state
   bool _isTap = false;
@@ -55,9 +53,9 @@ class MyGame extends FlameGame with PanDetector, HasCollisionDetection {
   Future<void> onLoad() async {
     addAll([
       BackGround(),
-      _ball = BallSprite(),
+      BallSprite(),
       _boot = BootSprite(),
-      _timer = TimerText(),
+      TimerText(),
     ]);
     _boot.angle = -0.5;
   }
@@ -65,7 +63,6 @@ class MyGame extends FlameGame with PanDetector, HasCollisionDetection {
   @override
   void update(double dt) {
     _manageFootAngle();
-    _manageBallPosition(dt);
     super.update(dt);
   }
 
@@ -105,12 +102,6 @@ class MyGame extends FlameGame with PanDetector, HasCollisionDetection {
       _boot.angle -= 0.025;
     }
   }
-
-  //ball methods -----------------------------
-  void _manageBallPosition(double dt) {
-    //gravity
-    _ball.position -= Vector2(0, -1) * dt * 450;
-  }
 }
 
 class BallSprite extends SpriteComponent with HasGameRef<MyGame>, CollisionCallbacks {
@@ -135,6 +126,10 @@ class BallSprite extends SpriteComponent with HasGameRef<MyGame>, CollisionCallb
 
   @override
   void update(double dt) {
+    if (gameRef.isStarted == false) return;
+    //gravity
+    position -= Vector2(0, -1) * dt * 450;
+
     position -= direction * speed * dt;
     if (speed > 0) {
       speed -= 25;
