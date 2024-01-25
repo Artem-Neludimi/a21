@@ -19,20 +19,23 @@ class _GameScreenState extends State<GameScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return Stack(
-      children: [
-        GameWidget(game: _game),
-        SafeArea(
-            child: Padding(
-          padding: const EdgeInsets.only(left: 12),
-          child: GestureDetector(
-            onTap: () => Navigator.of(context).pop(),
-            child: Image.asset(
-              'assets/images/menu.png',
+    return PopScope(
+      canPop: false,
+      child: Stack(
+        children: [
+          GameWidget(game: _game),
+          SafeArea(
+              child: Padding(
+            padding: const EdgeInsets.only(left: 12),
+            child: GestureDetector(
+              onTap: () => Navigator.of(context).pop(),
+              child: Image.asset(
+                'assets/images/menu.png',
+              ),
             ),
-          ),
-        )),
-      ],
+          )),
+        ],
+      ),
     );
   }
 }
