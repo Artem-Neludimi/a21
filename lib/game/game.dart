@@ -21,7 +21,6 @@ class MyGame extends FlameGame with PanDetector, HasCollisionDetection {
 
   //boot state
   bool isTap = false;
-  Vector2 bootPosition = Vector2.zero();
 
   @override
   Future<void> onLoad() async {
@@ -43,7 +42,6 @@ class MyGame extends FlameGame with PanDetector, HasCollisionDetection {
 
   @override
   void onPanUpdate(DragUpdateInfo info) {
-    bootPosition = info.eventPosition.global;
     _provideBootPosition(info.eventPosition.global);
     super.onPanUpdate(info);
   }
@@ -51,15 +49,14 @@ class MyGame extends FlameGame with PanDetector, HasCollisionDetection {
   @override
   void onPanEnd(DragEndInfo info) {
     isTap = false;
-    bootPosition = Vector2.zero();
     super.onPanEnd(info);
   }
 
   //boot methods -----------------------------
   void _provideBootPosition(Vector2 position) {
     boot.position = Vector2(
-      position.x - boot.size.x / 2,
-      position.y - boot.size.y / 2,
+      position.x - boot.size.x / 2 + 50,
+      position.y - boot.size.y / 2 + 50,
     );
   }
 }
