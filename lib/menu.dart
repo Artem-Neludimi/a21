@@ -1,4 +1,5 @@
 import 'package:a21/home.dart';
+import 'package:a21/main.dart';
 import 'package:a21/widgets.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -15,7 +16,9 @@ class Menu extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             AppButton(
-              onTap: () => Navigator.of(context).pushNamed('/game'),
+              onTap: () => Navigator.of(context).pushNamed('/game').then(
+                    (value) => context.read<AppCubit>().endGame(),
+                  ),
               text: 'START',
             ),
             const SizedBox(height: 24),

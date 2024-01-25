@@ -1,5 +1,4 @@
 import 'package:a21/game/game_screen.dart';
-import 'package:flame/collisions.dart';
 import 'package:flame/components.dart';
 
 class BackGround extends SpriteComponent with HasGameRef<MyGame> {
@@ -13,5 +12,6 @@ class BackGround extends SpriteComponent with HasGameRef<MyGame> {
       srcSize: Vector2(gameRef.size.x, gameRef.size.y),
     );
     add(ScreenHitbox());
+    super.onLoad();
   }
 }

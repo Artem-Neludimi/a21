@@ -1,11 +1,14 @@
 import 'package:a21/game/background.dart';
 import 'package:a21/game/timer.dart';
+import 'package:a21/main.dart';
+import 'package:a21/widgets.dart';
 import 'package:flame/collisions.dart';
 import 'package:flame/components.dart';
 import 'package:flame/events.dart';
 import 'package:flame/game.dart';
 import 'package:flame/input.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
 class GameScreen extends StatefulWidget {
   const GameScreen({super.key});
@@ -15,7 +18,15 @@ class GameScreen extends StatefulWidget {
 }
 
 class _GameScreenState extends State<GameScreen> {
-  final _game = MyGame();
+  late final AppCubit _cubit;
+  late final MyGame _game;
+
+  @override
+  void initState() {
+    _cubit = context.read<AppCubit>();
+    _game = MyGame(_cubit);
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -25,15 +36,48 @@ class _GameScreenState extends State<GameScreen> {
         children: [
           GameWidget(game: _game),
           SafeArea(
-              child: Padding(
-            padding: const EdgeInsets.only(left: 12),
-            child: GestureDetector(
-              onTap: () => Navigator.of(context).pop(),
-              child: Image.asset(
-                'assets/images/menu.png',
+            child: Padding(
+              padding: const EdgeInsets.only(left: 12),
+              child: GestureDetector(
+                onTap: () => Navigator.of(context).pop(),
+                child: Image.asset(
+                  'assets/images/menu.png',
+                ),
               ),
             ),
-          )),
+          ),
+          Positioned(
+            bottom: 40,
+            left: 0,
+            right: 0,
+            child: Material(
+              color: Colors.transparent,
+              child: Center(
+                child: SizedBox(
+                  height: 50,
+                  width: 150,
+                  child: Board(
+                    padding: const EdgeInsets.symmetric(horizontal: 12),
+                    child: Row(
+                      children: [
+                        Image.asset('assets/images/ball_icon.png'),
+                        Expanded(
+                          child: BlocBuilder<AppCubit, AppState>(
+                            builder: (context, state) {
+                              return TextWithShadow(
+                                state.currentGameScore.toString(),
+                                fontSize: 24,
+                              );
+                            },
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+              ),
+            ),
+          )
         ],
       ),
     );
@@ -41,7 +85,8 @@ class _GameScreenState extends State<GameScreen> {
 }
 
 class MyGame extends FlameGame with PanDetector, HasCollisionDetection {
-  MyGame();
+  final AppCubit cubit;
+  MyGame(this.cubit);
 
   late BootSprite _boot;
   late BallSprite _ball;
@@ -50,7 +95,7 @@ class MyGame extends FlameGame with PanDetector, HasCollisionDetection {
   bool isStarted = false;
 
   //boot state
-  bool _isTap = false;
+  bool isTap = false;
   Vector2 bootPosition = Vector2.zero();
 
   @override
@@ -62,6 +107,7 @@ class MyGame extends FlameGame with PanDetector, HasCollisionDetection {
       TimerText(),
     ]);
     _boot.angle = -0.5;
+    super.onLoad();
   }
 
   @override
@@ -73,7 +119,7 @@ class MyGame extends FlameGame with PanDetector, HasCollisionDetection {
   @override
   void onPanStart(DragStartInfo info) {
     _provideBootPosition(info.eventPosition.global);
-    _isTap = true;
+    isTap = true;
     super.onPanStart(info);
   }
 
@@ -86,7 +132,7 @@ class MyGame extends FlameGame with PanDetector, HasCollisionDetection {
 
   @override
   void onPanEnd(DragEndInfo info) {
-    _isTap = false;
+    isTap = false;
     bootPosition = Vector2.zero();
     super.onPanEnd(info);
   }
@@ -100,9 +146,9 @@ class MyGame extends FlameGame with PanDetector, HasCollisionDetection {
   }
 
   void _manageFootAngle() {
-    if (_isTap && _boot.angle <= 0) {
+    if (isTap && _boot.angle <= 0) {
       _boot.angle += 0.025;
-    } else if (!_isTap && _boot.angle >= -0.5) {
+    } else if (!isTap && _boot.angle >= -0.5) {
       _boot.angle -= 0.025;
     }
   }
@@ -139,7 +185,6 @@ class BallSprite extends SpriteComponent with HasGameRef<MyGame>, CollisionCallb
       speed -= 25;
       // angle -= 0.001;
     }
-
     super.update(dt);
   }
 
@@ -149,6 +194,9 @@ class BallSprite extends SpriteComponent with HasGameRef<MyGame>, CollisionCallb
       speed = 1200;
       direction.y = 2;
       direction.x = other.position.x < position.x ? 1 : -1;
+      if (gameRef.isTap && gameRef.isStarted) {
+        gameRef.cubit.simpleHit();
+      }
     }
     if (other is ScreenHitbox) {
       speed = 900;

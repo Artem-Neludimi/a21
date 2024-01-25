@@ -73,6 +73,7 @@ class AppCubit extends Cubit<AppState> {
           AppState(
             nickName: '',
             score: 0,
+            currentGameScore: 0,
             leaderBoard: [
               for (int i = 0; i < 99; i++)
                 (
@@ -83,12 +84,29 @@ class AppCubit extends Cubit<AppState> {
           ),
         );
 
-  setNickName(String nickName) {
+  void setNickName(String nickName) {
     String name = nickName;
     if (name.isEmpty) {
       name = 'PLAYER#${generatePlayerRandomNumber()}';
     }
     emit(state.copyWith(nickName: name));
+  }
+
+  void simpleHit() {
+    emit(
+      state.copyWith(
+        score: state.score + 10,
+        currentGameScore: state.currentGameScore + 10,
+      ),
+    );
+  }
+
+  void endGame() {
+    emit(
+      state.copyWith(
+        currentGameScore: 0,
+      ),
+    );
   }
 }
 
@@ -96,11 +114,13 @@ class AppState {
   const AppState({
     required this.nickName,
     required this.score,
+    required this.currentGameScore,
     required this.leaderBoard,
   });
 
   final String nickName;
   final int score;
+  final int currentGameScore;
   final List<(String, int)> leaderBoard;
 
   List<(String, int)> get sortedLeaderBoard {
@@ -112,11 +132,13 @@ class AppState {
   AppState copyWith({
     String? nickName,
     int? score,
+    int? currentGameScore,
     List<(String, int)>? leaderBoard,
   }) {
     return AppState(
       nickName: nickName ?? this.nickName,
       score: score ?? this.score,
+      currentGameScore: currentGameScore ?? this.currentGameScore,
       leaderBoard: leaderBoard ?? this.leaderBoard,
     );
   }
