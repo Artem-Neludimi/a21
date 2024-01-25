@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:a21/game/background.dart';
 import 'package:a21/game/bloc.dart';
+import 'package:a21/game/coins.dart';
 import 'package:a21/game/timer.dart';
 import 'package:flame/events.dart';
 import 'package:flame/game.dart';
@@ -68,6 +69,16 @@ class MyGame extends FlameGame with PanDetector, HasCollisionDetection {
             add(TimerText());
           },
         ),
+        FlameBlocListener<GameBloc, GameState>(
+          bloc: bloc,
+          listenWhen: (previousState, newState) => newState.win == 100,
+          onNewState: (state) async {
+            for (int i = 0; i < 7; i++) {
+              add(Coins());
+              await Future.delayed(const Duration(milliseconds: 300));
+            }
+          },
+        )
       ],
     );
     super.onLoad();
@@ -102,7 +113,6 @@ class MyGame extends FlameGame with PanDetector, HasCollisionDetection {
   }
 
   void _manageFeint(Vector2 position) {
-    if (isGameOn == false) return;
     final isBallOnTheRightOfBoot = ball.position.x > position.x;
     final isBallOnTheLeftOfBoot = ball.position.x < position.x;
     final isBallOnTheTopOfBoot = ball.position.y > position.y;

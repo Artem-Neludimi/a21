@@ -33,7 +33,12 @@ class BallSprite extends SpriteComponent with HasGameRef<MyGame>, CollisionCallb
 
   @override
   void onCollision(Set<Vector2> intersectionPoints, PositionComponent other) {
-    if (gameRef.feintLeft && gameRef.feintRight && gameRef.feintTop && gameRef.feintBottom && other is BootSprite) {
+    if (gameRef.feintLeft &&
+        gameRef.feintRight &&
+        gameRef.feintTop &&
+        gameRef.feintBottom &&
+        gameRef.isGameOn &&
+        other is BootSprite) {
       gameRef.bloc.add(GameFeint());
       gameRef.feintLeft = false;
       gameRef.feintRight = false;
@@ -55,7 +60,7 @@ class BallSprite extends SpriteComponent with HasGameRef<MyGame>, CollisionCallb
   void _managePosition(double dt) {
     if (gameRef.isGameOn == false) return;
     //gravity
-    position -= Vector2(0, -1) * dt * 0;
+    position -= Vector2(0, -1) * dt * 1200;
 
     position -= direction * speed * dt;
     if (speed > 0) {
