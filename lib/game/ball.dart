@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:flame/collisions.dart';
 import 'package:flame/components.dart';
 
@@ -34,7 +36,6 @@ class BallSprite extends SpriteComponent with HasGameRef<MyGame>, CollisionCallb
     position -= direction * speed * dt;
     if (speed > 0) {
       speed -= 20;
-      // angle -= 0.001;
     }
     super.update(dt);
   }
@@ -43,16 +44,17 @@ class BallSprite extends SpriteComponent with HasGameRef<MyGame>, CollisionCallb
   void onCollision(Set<Vector2> intersectionPoints, PositionComponent other) {
     if (other is BootSprite) {
       speed = 1200;
-      direction.y = other.position.y > position.y ? 1 : -1;
+      direction.y = other.position.y > position.y ? 3 : -1;
       direction.x = other.position.x < position.x ? 1 : -1;
-      if (gameRef.isTap && gameRef.isStarted) {
+      if (gameRef.isTap && gameRef.isStarted && other.position.y > 300) {
         gameRef.bloc.add(GameHit());
       }
     }
     if (other is ScreenHitbox) {
+      final random = Random();
       speed = 900;
-      direction.y = other.position.y < position.y ? 1 : -3;
-      direction.x = other.position.x < position.x ? 1 : -1;
+      direction.y = other.position.y < position.y ? random.nextDouble() : -random.nextDouble();
+      direction.x = other.position.x < position.x ? random.nextDouble() : -random.nextDouble();
     }
 
     super.onCollision(intersectionPoints, other);
