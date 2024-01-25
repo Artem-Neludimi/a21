@@ -206,7 +206,7 @@ class _ScoreShow extends StatelessWidget {
           child: Opacity(
             opacity: 0.6,
             child: TextWithShadow(
-              '+${state.win}',
+              state.win == 0 ? '' : '+${state.win}',
               fontSize: 33,
             ),
           ),

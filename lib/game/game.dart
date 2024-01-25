@@ -24,6 +24,12 @@ class MyGame extends FlameGame with PanDetector, HasCollisionDetection {
   //boot state
   bool isTap = false;
 
+  //feint state
+  bool feintLeft = false;
+  bool feintRight = false;
+  bool feintTop = false;
+  bool feintBottom = false;
+
   @override
   Future<void> onLoad() async {
     addAll([
@@ -92,5 +98,18 @@ class MyGame extends FlameGame with PanDetector, HasCollisionDetection {
       position.x - boot.size.x / 2 + 50,
       position.y - boot.size.y / 2 + 50,
     );
+    _manageFeint(position);
+  }
+
+  void _manageFeint(Vector2 position) {
+    if (isGameOn == false) return;
+    final isBallOnTheRightOfBoot = ball.position.x > position.x;
+    final isBallOnTheLeftOfBoot = ball.position.x < position.x;
+    final isBallOnTheTopOfBoot = ball.position.y > position.y;
+    final isBallOnTheBottomOfBoot = ball.position.y < position.y;
+    if (isBallOnTheRightOfBoot) feintRight = true;
+    if (isBallOnTheLeftOfBoot) feintLeft = true;
+    if (isBallOnTheTopOfBoot) feintTop = true;
+    feintBottom = isBallOnTheBottomOfBoot;
   }
 }

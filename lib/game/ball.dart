@@ -27,9 +27,35 @@ class BallSprite extends SpriteComponent with HasGameRef<MyGame>, CollisionCallb
 
   @override
   void update(double dt) {
+    _managePosition(dt);
+    super.update(dt);
+  }
+
+  @override
+  void onCollision(Set<Vector2> intersectionPoints, PositionComponent other) {
+    if (gameRef.feintLeft && gameRef.feintRight && gameRef.feintTop && gameRef.feintBottom && other is BootSprite) {
+      gameRef.bloc.add(GameFeint());
+      gameRef.feintLeft = false;
+      gameRef.feintRight = false;
+      gameRef.feintTop = false;
+      speed = 1500;
+      direction.y = other.position.y > position.y ? 3 : -1;
+      direction.x = other.position.x < position.x ? 1 : -1;
+      return;
+    } else {
+      gameRef.feintLeft = false;
+      gameRef.feintRight = false;
+      gameRef.feintTop = false;
+    }
+
+    _manageHit(other);
+    super.onCollision(intersectionPoints, other);
+  }
+
+  void _managePosition(double dt) {
     if (gameRef.isGameOn == false) return;
     //gravity
-    position -= Vector2(0, -1) * dt * 1200;
+    position -= Vector2(0, -1) * dt * 0;
 
     position -= direction * speed * dt;
     if (speed > 0) {
@@ -42,11 +68,9 @@ class BallSprite extends SpriteComponent with HasGameRef<MyGame>, CollisionCallb
       );
       gameRef.bloc.add(GameBallFall());
     }
-    super.update(dt);
   }
 
-  @override
-  void onCollision(Set<Vector2> intersectionPoints, PositionComponent other) {
+  void _manageHit(PositionComponent other) {
     if (other is BootSprite) {
       if (gameRef.isTap == false) {
         speed = 600;
@@ -66,7 +90,5 @@ class BallSprite extends SpriteComponent with HasGameRef<MyGame>, CollisionCallb
       direction.y = other.position.y < position.y ? random.nextDouble() : -random.nextDouble();
       direction.x = other.position.x < position.x ? random.nextDouble() : -random.nextDouble();
     }
-
-    super.onCollision(intersectionPoints, other);
   }
 }

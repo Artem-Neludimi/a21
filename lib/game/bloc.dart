@@ -13,6 +13,8 @@ class GameAddLive extends GameEvent {}
 
 class GameMultiplyScore extends GameEvent {}
 
+class GameFeint extends GameEvent {}
+
 class GameBloc extends Bloc<GameEvent, GameState> {
   GameBloc()
       : super(
@@ -33,6 +35,7 @@ class GameBloc extends Bloc<GameEvent, GameState> {
           GameRestart() => _onRestart(emit),
           GameAddLive() => _onAddedLive(emit),
           GameMultiplyScore() => _onMultiplyScore(emit),
+          GameFeint() => _onFeint(emit),
         };
       },
       transformer: droppable(),
@@ -82,6 +85,15 @@ class GameBloc extends Bloc<GameEvent, GameState> {
       score: state.score * 2,
       multipliedScore: true,
     ));
+  }
+
+  Future<void> _onFeint(Emitter<GameState> emit) async {
+    emit(state.copyWith(
+      score: state.score + 100,
+      win: 100,
+    ));
+    await Future.delayed(const Duration(milliseconds: 300));
+    emit(state.copyWith(win: 0));
   }
 }
 
