@@ -1,11 +1,12 @@
 import 'dart:ui';
 
-import 'package:a21/main.dart';
-import 'package:a21/home.dart';
+import 'package:a21/app_cubit.dart';
 import 'package:a21/widgets.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:gradient_borders/gradient_borders.dart';
+
+import 'home.dart';
 
 class Nickname extends StatefulWidget {
   const Nickname({
@@ -41,7 +42,7 @@ class _NicknameState extends State<Nickname> {
           AppButton(
             text: 'NEXT',
             onTap: () {
-              context.read<AppBloc>().setNickName(_controller.text);
+              context.read<AppCubit>().setNickName(_controller.text);
               context.read<MenuCubit>().tryGoToMenu();
             },
           )

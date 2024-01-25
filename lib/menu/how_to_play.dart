@@ -1,7 +1,8 @@
-import 'package:a21/home.dart';
 import 'package:a21/widgets.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+
+import 'home.dart';
 
 class HowToPlay extends StatelessWidget {
   const HowToPlay({super.key});

@@ -1,9 +1,10 @@
-import 'package:a21/home.dart';
-import 'package:a21/main.dart';
 import 'package:a21/widgets.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:gradient_borders/gradient_borders.dart';
+
+import '../app_cubit.dart';
+import 'home.dart';
 
 class Rating extends StatelessWidget {
   const Rating({super.key});
@@ -50,7 +51,7 @@ class _BoardState extends State<_Board> {
 
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<AppBloc, AppState>(
+    return BlocBuilder<AppCubit, AppState>(
       builder: (context, state) {
         return Expanded(
           child: SizedBox(

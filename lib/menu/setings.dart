@@ -1,4 +1,3 @@
-import 'package:a21/home.dart';
 import 'package:a21/widgets.dart';
 import 'package:audioplayers/audioplayers.dart';
 import 'package:flutter/material.dart';
@@ -6,7 +5,8 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:share_plus/share_plus.dart';
 import 'package:url_launcher/url_launcher.dart';
 
-import 'main.dart';
+import '../main.dart';
+import 'home.dart';
 
 class Settings extends StatelessWidget {
   const Settings({super.key});

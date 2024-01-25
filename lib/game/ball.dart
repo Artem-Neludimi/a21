@@ -1,9 +1,9 @@
 import 'dart:math';
 
+import 'package:a21/game/bloc.dart';
 import 'package:flame/collisions.dart';
 import 'package:flame/components.dart';
 
-import '../main.dart';
 import 'boot.dart';
 import 'game.dart';
 
@@ -40,7 +40,7 @@ class BallSprite extends SpriteComponent with HasGameRef<MyGame>, CollisionCallb
         gameRef.size.x / 2 - 50,
         gameRef.size.y / 4 - 50,
       );
-      gameRef.bloc.add(GameBallFell());
+      gameRef.bloc.add(GameBallFall());
     }
     super.update(dt);
   }

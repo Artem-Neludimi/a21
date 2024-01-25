@@ -1,20 +1,20 @@
 import 'dart:math';
 import 'dart:developer' as developer;
 
-import 'package:a21/bonus.dart';
-import 'package:a21/main.dart';
-import 'package:a21/nickname.dart';
-import 'package:a21/onborading.dart';
-import 'package:a21/rating.dart';
-import 'package:a21/setings.dart';
 import 'package:a21/widgets.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:store_redirect/store_redirect.dart';
 
+import '../main.dart';
+import 'bonus.dart';
 import 'how_to_play.dart';
 import 'menu.dart';
+import 'nickname.dart';
+import 'onborading.dart';
+import 'rating.dart';
+import 'setings.dart';
 import 'splash.dart';
 
 class MyHomePage extends StatefulWidget {

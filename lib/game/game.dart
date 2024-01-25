@@ -1,6 +1,6 @@
 import 'package:a21/game/background.dart';
+import 'package:a21/game/bloc.dart';
 import 'package:a21/game/timer.dart';
-import 'package:a21/main.dart';
 import 'package:flame/events.dart';
 import 'package:flame/game.dart';
 import 'package:flame/input.dart';
@@ -9,7 +9,7 @@ import 'ball.dart';
 import 'boot.dart';
 
 class MyGame extends FlameGame with PanDetector, HasCollisionDetection {
-  final AppBloc bloc;
+  final GameBloc bloc;
   MyGame(this.bloc);
 
   late BootSprite boot;

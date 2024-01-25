@@ -2,12 +2,13 @@
 
 import 'dart:ui';
 
-import 'package:a21/home.dart';
 import 'package:a21/main.dart';
 import 'package:a21/widgets.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:gradient_borders/gradient_borders.dart';
+
+import 'home.dart';
 
 class Onboarding extends StatelessWidget {
   const Onboarding({super.key});

@@ -1,8 +1,9 @@
 import 'dart:async';
 
-import 'package:a21/home.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+
+import 'home.dart';
 
 class Splash extends StatelessWidget {
   const Splash({super.key});
