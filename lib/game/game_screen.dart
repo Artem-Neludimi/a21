@@ -1,3 +1,4 @@
+import 'package:a21/app_cubit.dart';
 import 'package:a21/game/bloc.dart';
 import 'package:a21/game/game.dart';
 import 'package:a21/widgets.dart';
@@ -23,9 +24,15 @@ class _GameConfig extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocProvider(
       create: (context) => GameBloc(),
-      child: PopScope(
-        canPop: false,
-        child: child,
+      child: BlocListener<GameBloc, GameState>(
+        listenWhen: (previous, current) => current.isWin,
+        listener: (context, state) {
+          context.read<AppCubit>().addScore(state.score);
+        },
+        child: PopScope(
+          canPop: false,
+          child: child,
+        ),
       ),
     );
   }

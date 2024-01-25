@@ -10,7 +10,7 @@ class TimerText extends TextComponent with HasGameRef<MyGame> {
 
   @override
   Future<void> onLoad() async {
-    gameRef.isStarted = false;
+    gameRef.isGameOn = false;
     text = '3';
     textRenderer = textPaint;
     position = Vector2(
@@ -33,7 +33,7 @@ class TimerText extends TextComponent with HasGameRef<MyGame> {
         gameRef.size.x / 2 - 50,
         gameRef.size.y / 2 - 50,
       );
-      gameRef.isStarted = true;
+      gameRef.isGameOn = true;
     } else if (_startTime.difference(DateTime.now()).inSeconds == -4) {
       text = '';
     }

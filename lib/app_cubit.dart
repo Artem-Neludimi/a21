@@ -2,12 +2,14 @@ import 'dart:math';
 
 import 'package:flutter_bloc/flutter_bloc.dart';
 
+import 'main.dart';
+
 class AppCubit extends Cubit<AppState> {
   AppCubit()
       : super(
           AppState(
             nickName: '',
-            score: 0,
+            score: prefs.getInt('score') ?? 0,
             currentGameScore: 0,
             leaderBoard: [
               for (int i = 0; i < 99; i++)
@@ -29,6 +31,7 @@ class AppCubit extends Cubit<AppState> {
 
   void addScore(int score) {
     emit(state.copyWith(score: state.score + score));
+    prefs.setInt('score', state.score + score);
   }
 }
 
@@ -72,6 +75,6 @@ int generatePlayerRandomNumber() {
 }
 
 int generateScoreRandomNumber() {
-  final randomNumber = Random().nextInt(1000);
+  final randomNumber = Random().nextInt(9000) + 1000;
   return randomNumber;
 }

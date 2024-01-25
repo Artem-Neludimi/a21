@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:a21/game/background.dart';
 import 'package:a21/game/bloc.dart';
 import 'package:a21/game/timer.dart';
@@ -15,8 +17,10 @@ class MyGame extends FlameGame with PanDetector, HasCollisionDetection {
   late BootSprite boot;
   late BallSprite ball;
 
+  StreamSubscription? _blocSubscription;
+
   //game state
-  bool isStarted = false;
+  bool isGameOn = false;
 
   //boot state
   bool isTap = false;
@@ -29,6 +33,14 @@ class MyGame extends FlameGame with PanDetector, HasCollisionDetection {
       boot = BootSprite(),
       TimerText(),
     ]);
+    _blocSubscription = bloc.stream.listen((state) {
+      if (state.score > 1000) {
+        isGameOn = false;
+      }
+      if (state.lives == 0) {
+        // isGameOn = false;
+      }
+    });
     super.onLoad();
   }
 
@@ -49,6 +61,12 @@ class MyGame extends FlameGame with PanDetector, HasCollisionDetection {
   void onPanEnd(DragEndInfo info) {
     isTap = false;
     super.onPanEnd(info);
+  }
+
+  @override
+  void onDispose() {
+    _blocSubscription?.cancel();
+    super.onDispose();
   }
 
   //boot methods -----------------------------
