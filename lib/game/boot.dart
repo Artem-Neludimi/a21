@@ -38,11 +38,11 @@ class BootSprite extends SpriteComponent with HasGameRef<MyGame>, CollisionCallb
   @override
   void update(double dt) {
     if (game.isTap && gameRef.isStarted && isHitting) {
-      angle = min(angle + 0.2, 1);
+      angle = min(angle + 0.25, 1);
       anchor = Anchor.center;
     }
     if (isHitting == false) {
-      angle = max(angle - 0.2, 0.0);
+      angle = max(angle - 0.25, 0.0);
       anchor = Anchor.center;
     }
 

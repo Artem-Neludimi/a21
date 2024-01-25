@@ -33,7 +33,7 @@ class BallSprite extends SpriteComponent with HasGameRef<MyGame>, CollisionCallb
 
     position -= direction * speed * dt;
     if (speed > 0) {
-      speed -= 25;
+      speed -= 20;
       // angle -= 0.001;
     }
     super.update(dt);
@@ -51,7 +51,7 @@ class BallSprite extends SpriteComponent with HasGameRef<MyGame>, CollisionCallb
     }
     if (other is ScreenHitbox) {
       speed = 900;
-      direction.y = other.position.y < position.y ? 1 : -1;
+      direction.y = other.position.y < position.y ? 1 : -3;
       direction.x = other.position.x < position.x ? 1 : -1;
     }
 
