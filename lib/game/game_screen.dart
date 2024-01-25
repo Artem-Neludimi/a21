@@ -180,8 +180,38 @@ class _GamePresentationState extends State<_GamePresentation> {
             right: 0,
             child: _Score(),
           ),
+        _ScoreShow(state: state),
         const _BackButton(),
       ],
+    );
+  }
+}
+
+class _ScoreShow extends StatelessWidget {
+  const _ScoreShow({
+    required this.state,
+  });
+
+  final GameState state;
+
+  @override
+  Widget build(BuildContext context) {
+    return Positioned(
+      top: 66,
+      left: 0,
+      right: 0,
+      child: Material(
+        color: Colors.transparent,
+        child: Center(
+          child: Opacity(
+            opacity: 0.6,
+            child: TextWithShadow(
+              '+${state.win}',
+              fontSize: 33,
+            ),
+          ),
+        ),
+      ),
     );
   }
 }
