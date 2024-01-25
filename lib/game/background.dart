@@ -1,4 +1,4 @@
-import 'package:a21/game/game_screen.dart';
+import 'package:a21/game/game.dart';
 import 'package:flame/components.dart';
 
 class BackGround extends SpriteComponent with HasGameRef<MyGame> {
