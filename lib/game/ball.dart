@@ -22,9 +22,7 @@ class BallSprite extends SpriteComponent with HasGameRef<MyGame>, CollisionCallb
       gameRef.size.y / 1.5 - 50,
     );
     sprite = ball;
-    add(CircleHitbox(
-      radius: 50,
-    ));
+    add(CircleHitbox());
   }
 
   @override
@@ -37,17 +35,28 @@ class BallSprite extends SpriteComponent with HasGameRef<MyGame>, CollisionCallb
     if (speed > 0) {
       speed -= 20;
     }
+    if (position.y + 300 < 0 || position.y > gameRef.size.y) {
+      position = Vector2(
+        gameRef.size.x / 2 - 50,
+        gameRef.size.y / 4 - 50,
+      );
+    }
     super.update(dt);
   }
 
   @override
   void onCollision(Set<Vector2> intersectionPoints, PositionComponent other) {
     if (other is BootSprite) {
-      speed = 1200;
-      direction.y = other.position.y > position.y ? 3 : -1;
-      direction.x = other.position.x < position.x ? 1 : -1;
-      if (gameRef.isTap && gameRef.isStarted && other.position.y > 300) {
-        gameRef.bloc.add(GameHit());
+      if (gameRef.isTap == false) {
+        speed = 600;
+        direction.x = other.position.x < position.x ? -1 : 1;
+      } else {
+        speed = 1200;
+        direction.y = other.position.y > position.y ? 3 : -1;
+        direction.x = other.position.x < position.x ? 1 : -1;
+        if (gameRef.isTap && gameRef.isStarted && other.position.y > 300) {
+          gameRef.bloc.add(GameHit());
+        }
       }
     }
     if (other is ScreenHitbox) {

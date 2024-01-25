@@ -21,8 +21,8 @@ class BootSprite extends SpriteComponent with HasGameRef<MyGame>, CollisionCallb
     );
     sprite = boot;
     position = Vector2(
-      gameRef.size.x / 2.5 - 50,
-      gameRef.size.y / 1.2 - 50,
+      gameRef.size.x / 2,
+      gameRef.size.y / 1.2,
     );
     add(PolygonHitbox([
       Vector2(0, 60),
