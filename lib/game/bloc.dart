@@ -9,6 +9,8 @@ class GameBallFall extends GameEvent {}
 
 class GameRestart extends GameEvent {}
 
+class GameAddLive extends GameEvent {}
+
 class GameBloc extends Bloc<GameEvent, GameState> {
   GameBloc()
       : super(
@@ -25,11 +27,13 @@ class GameBloc extends Bloc<GameEvent, GameState> {
           GameHit() => _onHit(emit),
           GameBallFall() => _onBallFall(emit),
           GameRestart() => _onRestart(emit),
+          GameAddLive() => _onAddedLive(emit),
         };
       },
       transformer: droppable(),
     );
   }
+
   Future<void> _onHit(Emitter<GameState> emit) async {
     emit(state.copyWith(score: state.score + 10));
     if (state.score > 1000) {
@@ -52,6 +56,13 @@ class GameBloc extends Bloc<GameEvent, GameState> {
       lives: 3,
       isWin: false,
       isLose: false,
+    ));
+  }
+
+  Future<void> _onAddedLive(Emitter<GameState> emit) async {
+    emit(state.copyWith(
+      isLose: false,
+      lives: state.lives + 1,
     ));
   }
 }

@@ -44,6 +44,7 @@ dependencies:
   audioplayers: ^5.2.1
   flame: ^1.14.0
   bloc_concurrency: ^0.2.3
+  flame_bloc: ^1.10.9
 
 dev_dependencies:
   flutter_test:

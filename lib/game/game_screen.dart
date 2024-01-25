@@ -62,7 +62,6 @@ class _GamePresentationState extends State<_GamePresentation> {
     return Stack(
       children: [
         GameWidget(game: _game),
-        const _Score(),
         _Lives(state: state),
         if (state.isWin || state.isLose)
           Positioned.fill(
@@ -90,9 +89,61 @@ class _GamePresentationState extends State<_GamePresentation> {
                     },
                   ),
                   const Spacer(),
+                  GestureDetector(
+                    onTap: () {
+                      context.read<GameBloc>().add(GameAddLive());
+                      context.read<AppCubit>().subtractLive();
+                    },
+                    child: Board(
+                      child: Stack(
+                        clipBehavior: Clip.none,
+                        children: [
+                          const Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            mainAxisSize: MainAxisSize.min,
+                            children: [
+                              TextWithShadow(
+                                '+',
+                                fontSize: 33,
+                              ),
+                              SizedBox(width: 3),
+                              Icon(Icons.favorite, size: 50),
+                            ],
+                          ),
+                          Positioned(
+                            top: -15,
+                            right: -15,
+                            child: Container(
+                              width: 33,
+                              height: 33,
+                              decoration: BoxDecoration(
+                                color: Colors.black.withOpacity(0.4),
+                                borderRadius: BorderRadius.circular(100),
+                              ),
+                              child: FittedBox(
+                                child: TextWithShadow(
+                                  context.read<AppCubit>().state.addedLive.toString(),
+                                ),
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ),
+                  const SizedBox(height: 24),
+                  const _Score(),
+                  const SizedBox(height: 40),
                 ],
               ),
             ),
+          )
+        else
+          const Positioned(
+            bottom: 40,
+            left: 0,
+            right: 0,
+            child: _Score(),
           ),
         const _BackButton(),
       ],
@@ -128,33 +179,28 @@ class _Score extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Positioned(
-      bottom: 40,
-      left: 0,
-      right: 0,
-      child: Material(
-        color: Colors.transparent,
-        child: Center(
-          child: SizedBox(
-            height: 50,
-            width: 150,
-            child: Board(
-              padding: const EdgeInsets.symmetric(horizontal: 12),
-              child: Row(
-                children: [
-                  Image.asset('assets/images/ball_icon.png'),
-                  Expanded(
-                    child: BlocBuilder<GameBloc, GameState>(
-                      builder: (context, state) {
-                        return TextWithShadow(
-                          state.score.toString(),
-                          fontSize: 24,
-                        );
-                      },
-                    ),
+    return Material(
+      color: Colors.transparent,
+      child: Center(
+        child: SizedBox(
+          height: 50,
+          width: 150,
+          child: Board(
+            padding: const EdgeInsets.symmetric(horizontal: 12),
+            child: Row(
+              children: [
+                Image.asset('assets/images/ball_icon.png'),
+                Expanded(
+                  child: BlocBuilder<GameBloc, GameState>(
+                    builder: (context, state) {
+                      return TextWithShadow(
+                        state.score.toString(),
+                        fontSize: 24,
+                      );
+                    },
                   ),
-                ],
-              ),
+                ),
+              ],
             ),
           ),
         ),

@@ -6,6 +6,7 @@ import 'package:a21/game/timer.dart';
 import 'package:flame/events.dart';
 import 'package:flame/game.dart';
 import 'package:flame/input.dart';
+import 'package:flame_bloc/flame_bloc.dart';
 
 import 'ball.dart';
 import 'boot.dart';
@@ -16,8 +17,6 @@ class MyGame extends FlameGame with PanDetector, HasCollisionDetection {
 
   late BootSprite boot;
   late BallSprite ball;
-
-  StreamSubscription? _blocSubscription;
 
   //game state
   bool isGameOn = false;
@@ -33,17 +32,38 @@ class MyGame extends FlameGame with PanDetector, HasCollisionDetection {
       boot = BootSprite(),
       TimerText(),
     ]);
-    _blocSubscription = bloc.stream.listen((state) {
-      if (state.isWin) {
-        isGameOn = false;
-      }
-      if (state.isLose) {
-        isGameOn = false;
-      }
-      if (state.isInitial) {
-        add(TimerText());
-      }
-    });
+    addAll(
+      [
+        FlameBlocListener<GameBloc, GameState>(
+          bloc: bloc,
+          listenWhen: (previousState, newState) => newState.isWin || newState.isLose,
+          onNewState: (state) {
+            isGameOn = false;
+          },
+        ),
+        FlameBlocListener<GameBloc, GameState>(
+          bloc: bloc,
+          listenWhen: (previousState, newState) => newState.isWin || newState.isLose,
+          onNewState: (state) {
+            isGameOn = false;
+          },
+        ),
+        FlameBlocListener<GameBloc, GameState>(
+          bloc: bloc,
+          listenWhen: (previousState, newState) => newState.isInitial,
+          onNewState: (state) {
+            add(TimerText());
+          },
+        ),
+        FlameBlocListener<GameBloc, GameState>(
+          bloc: bloc,
+          listenWhen: (previousState, newState) => previousState.isLose && !newState.isLose && newState.lives > 0,
+          onNewState: (state) {
+            add(TimerText());
+          },
+        ),
+      ],
+    );
     super.onLoad();
   }
 
@@ -64,12 +84,6 @@ class MyGame extends FlameGame with PanDetector, HasCollisionDetection {
   void onPanEnd(DragEndInfo info) {
     isTap = false;
     super.onPanEnd(info);
-  }
-
-  @override
-  void onDispose() {
-    _blocSubscription?.cancel();
-    super.onDispose();
   }
 
   //boot methods -----------------------------
