@@ -18,13 +18,13 @@ class GameScreen extends StatefulWidget {
 }
 
 class _GameScreenState extends State<GameScreen> {
-  late final AppCubit _cubit;
+  late final AppBloc _bloc;
   late final MyGame _game;
 
   @override
   void initState() {
-    _cubit = context.read<AppCubit>();
-    _game = MyGame(_cubit);
+    _bloc = context.read<AppBloc>();
+    _game = MyGame(_bloc);
     super.initState();
   }
 
@@ -62,7 +62,7 @@ class _GameScreenState extends State<GameScreen> {
                       children: [
                         Image.asset('assets/images/ball_icon.png'),
                         Expanded(
-                          child: BlocBuilder<AppCubit, AppState>(
+                          child: BlocBuilder<AppBloc, AppState>(
                             builder: (context, state) {
                               return TextWithShadow(
                                 state.currentGameScore.toString(),
@@ -85,8 +85,8 @@ class _GameScreenState extends State<GameScreen> {
 }
 
 class MyGame extends FlameGame with PanDetector, HasCollisionDetection {
-  final AppCubit cubit;
-  MyGame(this.cubit);
+  final AppBloc bloc;
+  MyGame(this.bloc);
 
   late BootSprite _boot;
   late BallSprite _ball;
@@ -195,7 +195,7 @@ class BallSprite extends SpriteComponent with HasGameRef<MyGame>, CollisionCallb
       direction.y = 2;
       direction.x = other.position.x < position.x ? 1 : -1;
       if (gameRef.isTap && gameRef.isStarted) {
-        gameRef.cubit.simpleHit();
+        gameRef.bloc.add(GameHit());
       }
     }
     if (other is ScreenHitbox) {

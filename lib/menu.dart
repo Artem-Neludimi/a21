@@ -17,7 +17,7 @@ class Menu extends StatelessWidget {
           children: [
             AppButton(
               onTap: () => Navigator.of(context).pushNamed('/game').then(
-                    (value) => context.read<AppCubit>().endGame(),
+                    (value) => context.read<AppBloc>().endGame(),
                   ),
               text: 'START',
             ),

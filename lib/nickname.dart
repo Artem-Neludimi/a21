@@ -41,7 +41,7 @@ class _NicknameState extends State<Nickname> {
           AppButton(
             text: 'NEXT',
             onTap: () {
-              context.read<AppCubit>().setNickName(_controller.text);
+              context.read<AppBloc>().setNickName(_controller.text);
               context.read<MenuCubit>().tryGoToMenu();
             },
           )

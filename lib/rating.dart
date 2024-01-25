@@ -50,7 +50,7 @@ class _BoardState extends State<_Board> {
 
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<AppCubit, AppState>(
+    return BlocBuilder<AppBloc, AppState>(
       builder: (context, state) {
         return Expanded(
           child: SizedBox(

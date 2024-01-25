@@ -43,6 +43,7 @@ dependencies:
   share_plus: ^7.2.1
   audioplayers: ^5.2.1
   flame: ^1.14.0
+  bloc_concurrency: ^0.2.3
 
 dev_dependencies:
   flutter_test:

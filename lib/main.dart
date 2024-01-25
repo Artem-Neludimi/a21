@@ -1,7 +1,10 @@
+// ignore_for_file: invalid_use_of_visible_for_testing_member
+
 import 'dart:math';
 
 import 'package:a21/home.dart';
 import 'package:audioplayers/audioplayers.dart';
+import 'package:bloc_concurrency/bloc_concurrency.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -42,7 +45,7 @@ class _MyAppState extends State<MyApp> {
           create: (context) => MenuCubit(),
         ),
         BlocProvider(
-          create: (context) => AppCubit(),
+          create: (context) => AppBloc(),
         ),
       ],
       child: MaterialApp(
@@ -67,8 +70,12 @@ class _MyAppState extends State<MyApp> {
   }
 }
 
-class AppCubit extends Cubit<AppState> {
-  AppCubit()
+sealed class AppEvent {}
+
+class GameHit extends AppEvent {}
+
+class AppBloc extends Bloc<AppEvent, AppState> {
+  AppBloc()
       : super(
           AppState(
             nickName: '',
@@ -82,7 +89,16 @@ class AppCubit extends Cubit<AppState> {
                 ),
             ],
           ),
-        );
+        ) {
+    on<AppEvent>(
+      (event, emit) {
+        return switch (event) {
+          GameHit() => _hit(emit),
+        };
+      },
+      transformer: droppable(),
+    );
+  }
 
   void setNickName(String nickName) {
     String name = nickName;
@@ -92,21 +108,23 @@ class AppCubit extends Cubit<AppState> {
     emit(state.copyWith(nickName: name));
   }
 
-  void simpleHit() {
-    emit(
-      state.copyWith(
-        score: state.score + 10,
-        currentGameScore: state.currentGameScore + 10,
-      ),
-    );
-  }
-
   void endGame() {
     emit(
       state.copyWith(
         currentGameScore: 0,
       ),
     );
+  }
+
+  Future<void> _hit(Emitter<AppState> emit) async {
+    emit(
+      state.copyWith(
+        currentGameScore: state.currentGameScore + 10,
+        score: state.score + 10,
+      ),
+    );
+    await prefs.setInt('score', state.score + 10);
+    await Future.delayed(const Duration(milliseconds: 300));
   }
 }
 
