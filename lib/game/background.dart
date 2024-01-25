@@ -12,6 +12,6 @@ class BackGround extends SpriteComponent with HasGameRef<MyGame> {
       srcPosition: Vector2(50, 50),
       srcSize: Vector2(gameRef.size.x, gameRef.size.y),
     );
-    add(RectangleHitbox());
+    add(ScreenHitbox());
   }
 }

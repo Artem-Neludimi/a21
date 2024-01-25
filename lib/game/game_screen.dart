@@ -1,4 +1,5 @@
 import 'package:a21/game/background.dart';
+import 'package:a21/game/timer.dart';
 import 'package:flame/collisions.dart';
 import 'package:flame/components.dart';
 import 'package:flame/events.dart';
@@ -41,12 +42,14 @@ class MyGame extends FlameGame with PanDetector, HasCollisionDetection {
 
   late BootSprite _boot;
   late BallSprite _ball;
+  late TimerText _timer;
+
+  //game state
+  String time = '3';
 
   //boot state
   bool _isTap = false;
   Vector2 bootPosition = Vector2.zero();
-
-  //ball state
 
   @override
   Future<void> onLoad() async {
@@ -54,7 +57,7 @@ class MyGame extends FlameGame with PanDetector, HasCollisionDetection {
       BackGround(),
       _ball = BallSprite(),
       _boot = BootSprite(),
-      ScreenHitbox(),
+      _timer = TimerText(),
     ]);
     _boot.angle = -0.5;
   }
@@ -122,7 +125,7 @@ class BallSprite extends SpriteComponent with HasGameRef<MyGame>, CollisionCallb
     size = Vector2(100, 100);
     position = Vector2(
       gameRef.size.x / 2 - 50,
-      gameRef.size.y / 3 - 50,
+      gameRef.size.y / 1.5 - 50,
     );
     sprite = ball;
     add(CircleHitbox(
@@ -134,7 +137,7 @@ class BallSprite extends SpriteComponent with HasGameRef<MyGame>, CollisionCallb
   void update(double dt) {
     position -= direction * speed * dt;
     if (speed > 0) {
-      speed -= 35;
+      speed -= 25;
       // angle -= 0.001;
     }
 
