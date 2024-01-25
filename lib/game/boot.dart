@@ -3,6 +3,7 @@ import 'dart:math';
 import 'package:flame/collisions.dart';
 import 'package:flame/components.dart';
 
+import 'ball.dart';
 import 'game.dart';
 
 class BootSprite extends SpriteComponent with HasGameRef<MyGame>, CollisionCallbacks {

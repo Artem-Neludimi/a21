@@ -79,8 +79,6 @@ class AppBloc extends Bloc<AppEvent, AppState> {
       : super(
           AppState(
             nickName: '',
-            score: prefs.getInt('score') ?? 0,
-            currentGameScore: 0,
             leaderBoard: [
               for (int i = 0; i < 99; i++)
                 (
@@ -88,12 +86,15 @@ class AppBloc extends Bloc<AppEvent, AppState> {
                   generateScoreRandomNumber(),
                 ),
             ],
+            score: prefs.getInt('score') ?? 0,
+            currentGameScore: 0,
+            lives: 3,
           ),
         ) {
     on<AppEvent>(
       (event, emit) {
         return switch (event) {
-          GameHit() => _hit(emit),
+          GameHit() => _onHit(emit),
         };
       },
       transformer: droppable(),
@@ -112,11 +113,12 @@ class AppBloc extends Bloc<AppEvent, AppState> {
     emit(
       state.copyWith(
         currentGameScore: 0,
+        lives: 3,
       ),
     );
   }
 
-  Future<void> _hit(Emitter<AppState> emit) async {
+  Future<void> _onHit(Emitter<AppState> emit) async {
     emit(
       state.copyWith(
         currentGameScore: state.currentGameScore + 10,
@@ -131,15 +133,17 @@ class AppBloc extends Bloc<AppEvent, AppState> {
 class AppState {
   const AppState({
     required this.nickName,
+    required this.leaderBoard,
     required this.score,
     required this.currentGameScore,
-    required this.leaderBoard,
+    required this.lives,
   });
 
   final String nickName;
+  final List<(String, int)> leaderBoard;
   final int score;
   final int currentGameScore;
-  final List<(String, int)> leaderBoard;
+  final int lives;
 
   List<(String, int)> get sortedLeaderBoard {
     final sorted = [...leaderBoard, (nickName, score)];
@@ -149,15 +153,17 @@ class AppState {
 
   AppState copyWith({
     String? nickName,
+    List<(String, int)>? leaderBoard,
     int? score,
     int? currentGameScore,
-    List<(String, int)>? leaderBoard,
+    int? lives,
   }) {
     return AppState(
       nickName: nickName ?? this.nickName,
+      leaderBoard: leaderBoard ?? this.leaderBoard,
       score: score ?? this.score,
       currentGameScore: currentGameScore ?? this.currentGameScore,
-      leaderBoard: leaderBoard ?? this.leaderBoard,
+      lives: lives ?? this.lives,
     );
   }
 }
