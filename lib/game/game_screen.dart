@@ -62,30 +62,63 @@ class _GamePresentationState extends State<_GamePresentation> {
     return Stack(
       children: [
         GameWidget(game: _game),
-        SafeArea(
-          child: Padding(
-            padding: const EdgeInsets.only(left: 12),
-            child: GestureDetector(
-              onTap: () => Navigator.of(context).pop(),
-              child: Image.asset(
-                'assets/images/menu.png',
+        const _Score(),
+        _Lives(state: state),
+        if (state.isWin || state.isLose)
+          Positioned.fill(
+            child: Material(
+              color: Colors.transparent,
+              child: Column(
+                children: [
+                  const Spacer(),
+                  TextWithShadow(
+                    'YOU ${state.isWin ? 'WIN' : 'LOSE'}',
+                    fontSize: 50,
+                  ),
+                  const Spacer(),
+                  AppButton(
+                    text: 'TRY AGAIN',
+                    onTap: () {
+                      context.read<GameBloc>().add(GameRestart());
+                    },
+                  ),
+                  const SizedBox(height: 24),
+                  AppButton(
+                    text: 'MENU',
+                    onTap: () {
+                      Navigator.of(context).pop();
+                    },
+                  ),
+                  const Spacer(),
+                ],
               ),
             ),
           ),
-        ),
-        const _Score(),
-        Positioned(
-          top: 100,
-          right: 10,
-          child: Column(
-            children: [
-              Icon(state.lives < 3 ? Icons.favorite_border : Icons.favorite, size: 50),
-              Icon(state.lives < 2 ? Icons.favorite_border : Icons.favorite, size: 50),
-              Icon(state.lives < 1 ? Icons.favorite_border : Icons.favorite, size: 50),
-            ],
-          ),
-        )
+        const _BackButton(),
       ],
+    );
+  }
+}
+
+class _Lives extends StatelessWidget {
+  const _Lives({
+    required this.state,
+  });
+
+  final GameState state;
+
+  @override
+  Widget build(BuildContext context) {
+    return Positioned(
+      top: 100,
+      right: 10,
+      child: Column(
+        children: [
+          Icon(state.lives < 3 ? Icons.favorite_border : Icons.favorite, size: 50),
+          Icon(state.lives < 2 ? Icons.favorite_border : Icons.favorite, size: 50),
+          Icon(state.lives < 1 ? Icons.favorite_border : Icons.favorite, size: 50),
+        ],
+      ),
     );
   }
 }
@@ -123,6 +156,25 @@ class _Score extends StatelessWidget {
                 ],
               ),
             ),
+          ),
+        ),
+      ),
+    );
+  }
+}
+
+class _BackButton extends StatelessWidget {
+  const _BackButton();
+
+  @override
+  Widget build(BuildContext context) {
+    return SafeArea(
+      child: Padding(
+        padding: const EdgeInsets.only(left: 12),
+        child: GestureDetector(
+          onTap: () => Navigator.of(context).pop(),
+          child: Image.asset(
+            'assets/images/menu.png',
           ),
         ),
       ),

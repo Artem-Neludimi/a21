@@ -1,5 +1,3 @@
-// ignore_for_file: invalid_use_of_visible_for_testing_member
-
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:bloc_concurrency/bloc_concurrency.dart';
 
@@ -8,6 +6,8 @@ sealed class GameEvent {}
 class GameHit extends GameEvent {}
 
 class GameBallFall extends GameEvent {}
+
+class GameRestart extends GameEvent {}
 
 class GameBloc extends Bloc<GameEvent, GameState> {
   GameBloc()
@@ -24,6 +24,7 @@ class GameBloc extends Bloc<GameEvent, GameState> {
         return switch (event) {
           GameHit() => _onHit(emit),
           GameBallFall() => _onBallFall(emit),
+          GameRestart() => _onRestart(emit),
         };
       },
       transformer: droppable(),
@@ -44,6 +45,15 @@ class GameBloc extends Bloc<GameEvent, GameState> {
     }
     await Future.delayed(const Duration(milliseconds: 600));
   }
+
+  Future<void> _onRestart(Emitter<GameState> emit) async {
+    emit(const GameState(
+      score: 0,
+      lives: 3,
+      isWin: false,
+      isLose: false,
+    ));
+  }
 }
 
 class GameState {
@@ -57,6 +67,8 @@ class GameState {
   final int lives;
   final bool isWin;
   final bool isLose;
+
+  bool get isInitial => score == 0 && lives == 3 && isWin == false && isLose == false;
 
   GameState copyWith({
     int? score,

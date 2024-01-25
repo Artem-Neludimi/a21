@@ -34,11 +34,14 @@ class MyGame extends FlameGame with PanDetector, HasCollisionDetection {
       TimerText(),
     ]);
     _blocSubscription = bloc.stream.listen((state) {
-      if (state.score > 1000) {
+      if (state.isWin) {
         isGameOn = false;
       }
-      if (state.lives == 0) {
-        // isGameOn = false;
+      if (state.isLose) {
+        isGameOn = false;
+      }
+      if (state.isInitial) {
+        add(TimerText());
       }
     });
     super.onLoad();
