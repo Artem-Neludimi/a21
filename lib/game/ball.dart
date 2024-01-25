@@ -40,6 +40,7 @@ class BallSprite extends SpriteComponent with HasGameRef<MyGame>, CollisionCallb
         gameRef.size.x / 2 - 50,
         gameRef.size.y / 4 - 50,
       );
+      gameRef.bloc.add(GameBallFell());
     }
     super.update(dt);
   }

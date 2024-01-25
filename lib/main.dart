@@ -74,6 +74,8 @@ sealed class AppEvent {}
 
 class GameHit extends AppEvent {}
 
+class GameBallFell extends AppEvent {}
+
 class AppBloc extends Bloc<AppEvent, AppState> {
   AppBloc()
       : super(
@@ -92,10 +94,9 @@ class AppBloc extends Bloc<AppEvent, AppState> {
           ),
         ) {
     on<AppEvent>(
-      (event, emit) {
-        return switch (event) {
-          GameHit() => _onHit(emit),
-        };
+      (event, emit) => switch (event) {
+        GameHit() => _onHit(emit),
+        GameBallFell() => _onBallFell(emit),
       },
       transformer: droppable(),
     );
@@ -127,6 +128,15 @@ class AppBloc extends Bloc<AppEvent, AppState> {
     );
     await prefs.setInt('score', state.score + 10);
     await Future.delayed(const Duration(milliseconds: 300));
+  }
+
+  Future<void> _onBallFell(Emitter<AppState> emit) async {
+    emit(
+      state.copyWith(
+        lives: state.lives - 1,
+      ),
+    );
+    await Future.delayed(const Duration(milliseconds: 500));
   }
 }
 
