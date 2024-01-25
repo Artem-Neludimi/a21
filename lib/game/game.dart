@@ -99,7 +99,7 @@ class BallSprite extends SpriteComponent with HasGameRef<MyGame>, CollisionCallb
   void onCollision(Set<Vector2> intersectionPoints, PositionComponent other) {
     if (other is BootSprite) {
       speed = 1200;
-      direction.y = 2;
+      direction.y = other.position.y > position.y ? 1 : -1;
       direction.x = other.position.x < position.x ? 1 : -1;
       if (gameRef.isTap && gameRef.isStarted) {
         gameRef.bloc.add(GameHit());
