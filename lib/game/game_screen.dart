@@ -44,6 +44,7 @@ class MyGame extends FlameGame with PanDetector, HasCollisionDetection {
   MyGame();
 
   late BootSprite _boot;
+  late BallSprite _ball;
 
   //game state
   bool isStarted = false;
@@ -56,7 +57,7 @@ class MyGame extends FlameGame with PanDetector, HasCollisionDetection {
   Future<void> onLoad() async {
     addAll([
       BackGround(),
-      BallSprite(),
+      _ball = BallSprite(),
       _boot = BootSprite(),
       TimerText(),
     ]);
@@ -175,8 +176,15 @@ class BootSprite extends SpriteComponent with HasGameRef<MyGame> {
       gameRef.size.x / 2.5 - 50,
       gameRef.size.y / 1.2 - 50,
     );
-    add(CircleHitbox(
-      radius: 50,
-    ));
+    add(
+      PolygonHitbox(
+        [
+          Vector2(0, 50),
+          Vector2(0, size.y),
+          Vector2(size.x, size.y),
+          Vector2(size.x, 0),
+        ],
+      ),
+    );
   }
 }
