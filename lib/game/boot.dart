@@ -14,7 +14,7 @@ class BootSprite extends SpriteComponent with HasGameRef<MyGame>, CollisionCallb
   @override
   Future<void> onLoad() async {
     final boot = await gameRef.loadSprite('boot_1.png');
-    size = Vector2(157, 100);
+    size = Vector2(130, 90);
     position = Vector2(
       gameRef.size.x / 2 - 50,
       gameRef.size.y / 1.7 - 50,

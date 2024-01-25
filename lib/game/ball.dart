@@ -29,7 +29,7 @@ class BallSprite extends SpriteComponent with HasGameRef<MyGame>, CollisionCallb
   void update(double dt) {
     if (gameRef.isStarted == false) return;
     //gravity
-    position -= Vector2(0, -1) * dt * 450;
+    position -= Vector2(0, -1) * dt * 1200;
 
     position -= direction * speed * dt;
     if (speed > 0) {
@@ -51,7 +51,7 @@ class BallSprite extends SpriteComponent with HasGameRef<MyGame>, CollisionCallb
         speed = 600;
         direction.x = other.position.x < position.x ? -1 : 1;
       } else {
-        speed = 1200;
+        speed = 1500;
         direction.y = other.position.y > position.y ? 3 : -1;
         direction.x = other.position.x < position.x ? 1 : -1;
         if (gameRef.isTap && gameRef.isStarted && other.position.y > 300) {
