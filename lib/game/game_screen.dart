@@ -88,7 +88,7 @@ class MyGame extends FlameGame with PanDetector, HasCollisionDetection {
   final AppBloc bloc;
   MyGame(this.bloc);
 
-  late BootSprite _boot;
+  late BootSprite boot;
   late BallSprite _ball;
 
   //game state
@@ -103,10 +103,10 @@ class MyGame extends FlameGame with PanDetector, HasCollisionDetection {
     addAll([
       BackGround(),
       _ball = BallSprite(),
-      _boot = BootSprite(),
+      boot = BootSprite(),
       TimerText(),
     ]);
-    _boot.angle = -0.5;
+    boot.angle = -0.5;
     super.onLoad();
   }
 
@@ -139,17 +139,17 @@ class MyGame extends FlameGame with PanDetector, HasCollisionDetection {
 
   //boot methods -----------------------------
   void _provideBootPosition(Vector2 position) {
-    _boot.position = Vector2(
-      position.x - _boot.size.x / 2,
-      position.y - _boot.size.y / 2,
+    boot.position = Vector2(
+      position.x - boot.size.x / 2,
+      position.y - boot.size.y / 2,
     );
   }
 
   void _manageFootAngle() {
-    if (isTap && _boot.angle <= 0) {
-      _boot.angle += 0.025;
-    } else if (!isTap && _boot.angle >= -0.5) {
-      _boot.angle -= 0.025;
+    if (isTap && boot.angle <= 0) {
+      boot.angle += 0.025;
+    } else if (!isTap && boot.angle >= -0.5) {
+      boot.angle -= 0.025;
     }
   }
 }
@@ -199,6 +199,7 @@ class BallSprite extends SpriteComponent with HasGameRef<MyGame>, CollisionCallb
       }
     }
     if (other is ScreenHitbox) {
+      print('game over');
       speed = 900;
       direction.y = other.position.y < position.y ? 1 : -1;
       direction.x = other.position.x < position.x ? 1 : -1;

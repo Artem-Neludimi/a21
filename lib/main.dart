@@ -79,7 +79,7 @@ class AppBloc extends Bloc<AppEvent, AppState> {
       : super(
           AppState(
             nickName: '',
-            score: 0,
+            score: prefs.getInt('score') ?? 0,
             currentGameScore: 0,
             leaderBoard: [
               for (int i = 0; i < 99; i++)
