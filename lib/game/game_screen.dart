@@ -176,15 +176,11 @@ class BootSprite extends SpriteComponent with HasGameRef<MyGame> {
       gameRef.size.x / 2.5 - 50,
       gameRef.size.y / 1.2 - 50,
     );
-    add(
-      PolygonHitbox(
-        [
-          Vector2(0, 50),
-          Vector2(0, size.y),
-          Vector2(size.x, size.y),
-          Vector2(size.x, 0),
-        ],
-      ),
-    );
+    add(PolygonHitbox([
+      Vector2(0, 60),
+      Vector2(0, size.y),
+      Vector2(size.x - 20, size.y - 20),
+      Vector2(size.x - 40, 0),
+    ]));
   }
 }
