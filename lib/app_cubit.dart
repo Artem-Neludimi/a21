@@ -23,6 +23,11 @@ class AppCubit extends Cubit<AppState> {
             bgImage: prefs.getString('bgImage') ?? 'assets/images/bg_1.png',
             ballImage: prefs.getString('ballImage') ?? 'assets/images/ball_1.png',
             bootImage: prefs.getString('bootImage') ?? 'assets/images/boot_1.png',
+            allBoughtItems: [
+              'assets/images/bg_1.png',
+              'assets/images/ball_1.png',
+              'assets/images/boot_1.png',
+            ],
           ),
         );
 
@@ -76,6 +81,7 @@ class AppState {
     required this.bgImage,
     required this.ballImage,
     required this.bootImage,
+    required this.allBoughtItems,
   });
 
   final String nickName;
@@ -87,6 +93,7 @@ class AppState {
   final String bgImage;
   final String ballImage;
   final String bootImage;
+  final List<String> allBoughtItems;
 
   List<(String, int)> get sortedLeaderBoard {
     final sorted = [...leaderBoard, (nickName, score)];
@@ -104,6 +111,7 @@ class AppState {
     String? bgImage,
     String? ballImage,
     String? bootImage,
+    List<String>? allBoughtItems,
   }) {
     return AppState(
       nickName: nickName ?? this.nickName,
@@ -115,6 +123,7 @@ class AppState {
       bgImage: bgImage ?? this.bgImage,
       ballImage: ballImage ?? this.ballImage,
       bootImage: bootImage ?? this.bootImage,
+      allBoughtItems: allBoughtItems ?? this.allBoughtItems,
     );
   }
 }

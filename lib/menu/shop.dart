@@ -141,22 +141,34 @@ class _BootImage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final use = context.watch<AppCubit>().state.bootImage == image;
+    final contains = context.watch<AppCubit>().state.allBoughtItems.contains(image);
 
     return GestureDetector(
       onTap: () => context.read<AppCubit>().setBootImage(image),
-      child: Padding(
-        padding: const EdgeInsets.only(right: 8.0),
-        child: Column(
-          children: [
-            Expanded(
-              child: ClipRRect(
-                borderRadius: BorderRadius.circular(16),
-                child: Image.asset(image),
+      child: Stack(
+        children: [
+          Padding(
+            padding: const EdgeInsets.only(right: 8.0),
+            child: Column(
+              children: [
+                Expanded(
+                  child: ClipRRect(
+                    borderRadius: BorderRadius.circular(16),
+                    child: Image.asset(image),
+                  ),
+                ),
+                Text(use ? 'use' : '', style: const TextStyle(fontSize: 24)),
+              ],
+            ),
+          ),
+          if (contains)
+            Positioned(
+              child: Image.asset(
+                'assets/images/star.png',
+                height: 40,
               ),
             ),
-            Text(use ? 'use' : '', style: const TextStyle(fontSize: 24)),
-          ],
-        ),
+        ],
       ),
     );
   }
@@ -168,23 +180,36 @@ class _BallItem extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final ballImage = context.watch<AppCubit>().state.ballImage;
+    final contains = context.watch<AppCubit>().state.allBoughtItems.contains(image);
+
     return GestureDetector(
       onTap: () {
         context.read<AppCubit>().setBallImage(image);
       },
-      child: Padding(
-        padding: const EdgeInsets.only(right: 8.0),
-        child: Column(
-          children: [
-            Expanded(
-              child: ClipRRect(
-                borderRadius: BorderRadius.circular(16),
-                child: Image.asset(image),
+      child: Stack(
+        children: [
+          Padding(
+            padding: const EdgeInsets.only(right: 8.0),
+            child: Column(
+              children: [
+                Expanded(
+                  child: ClipRRect(
+                    borderRadius: BorderRadius.circular(16),
+                    child: Image.asset(image),
+                  ),
+                ),
+                Text(ballImage == image ? 'use' : '', style: const TextStyle(fontSize: 24)),
+              ],
+            ),
+          ),
+          if (contains)
+            Positioned(
+              child: Image.asset(
+                'assets/images/star.png',
+                height: 40,
               ),
             ),
-            Text(ballImage == image ? 'use' : '', style: const TextStyle(fontSize: 24)),
-          ],
-        ),
+        ],
       ),
     );
   }
@@ -198,23 +223,35 @@ class _BGItem extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final bgImage = context.watch<AppCubit>().state.bgImage;
+    final contains = context.watch<AppCubit>().state.allBoughtItems.contains(image);
     return GestureDetector(
       onTap: () => context.read<AppCubit>().setBgImage(image),
-      child: Padding(
-        padding: const EdgeInsets.only(right: 8.0),
-        child: Column(
-          children: [
-            Expanded(
-              child: ClipRRect(
-                borderRadius: BorderRadius.circular(16),
-                child: Image.asset(
-                  image,
+      child: Stack(
+        children: [
+          Padding(
+            padding: const EdgeInsets.only(right: 8.0),
+            child: Column(
+              children: [
+                Expanded(
+                  child: ClipRRect(
+                    borderRadius: BorderRadius.circular(16),
+                    child: Image.asset(
+                      image,
+                    ),
+                  ),
                 ),
+                Text(bgImage == image ? 'use' : '', style: const TextStyle(fontSize: 24)),
+              ],
+            ),
+          ),
+          if (contains)
+            Positioned(
+              child: Image.asset(
+                'assets/images/star.png',
+                height: 40,
               ),
             ),
-            Text(bgImage == image ? 'use' : '', style: const TextStyle(fontSize: 24)),
-          ],
-        ),
+        ],
       ),
     );
   }
