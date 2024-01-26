@@ -23,11 +23,12 @@ class AppCubit extends Cubit<AppState> {
             bgImage: prefs.getString('bgImage') ?? 'assets/images/bg_1.png',
             ballImage: prefs.getString('ballImage') ?? 'assets/images/ball_1.png',
             bootImage: prefs.getString('bootImage') ?? 'assets/images/boot_1.png',
-            allBoughtItems: [
-              'assets/images/bg_1.png',
-              'assets/images/ball_1.png',
-              'assets/images/boot_1.png',
-            ],
+            allBoughtItems: prefs.getStringList('allBoughtItems') ??
+                [
+                  'assets/images/bg_1.png',
+                  'assets/images/ball_1.png',
+                  'assets/images/boot_1.png',
+                ],
           ),
         );
 
@@ -67,6 +68,25 @@ class AppCubit extends Cubit<AppState> {
   void setBootImage(String image) {
     emit(state.copyWith(bootImage: image));
     prefs.setString('bootImage', image);
+  }
+
+  void buyItem(String s, int i) {
+    final allBoughtItems = [...state.allBoughtItems, s];
+    emit(state.copyWith(allBoughtItems: allBoughtItems));
+    prefs.setStringList('allBoughtItems', allBoughtItems);
+    addScore(-i);
+  }
+
+  void buyMultiplier() {
+    if (state.score < 1000) return;
+    emit(state.copyWith(scoreMultipliers: state.scoreMultipliers + 1));
+    addScore(-1000);
+  }
+
+  void buyLive() {
+    if (state.score < 1000) return;
+    emit(state.copyWith(addedLive: state.addedLive + 1));
+    addScore(-1000);
   }
 }
 
