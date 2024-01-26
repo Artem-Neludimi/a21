@@ -114,8 +114,16 @@ class MenuCubit extends Cubit<MenuState> {
 
   void tryGoToMenu() {
     final firstTime = prefs.getBool('firstTime')!;
+    final bonusUnixTime = prefs.getInt('bonusUnixTime');
+
+    final bonusesRewarded = prefs.getInt('bonusesRewarded') ?? 0;
     if (firstTime) {
       emit(MenuState.onboarding);
+    } else if (bonusUnixTime == null) {
+      prefs.setInt('bonusUnixTime', DateTime.now().millisecondsSinceEpoch);
+      emit(MenuState.bonus);
+    } else if (bonusesRewarded == 0) {
+      emit(MenuState.bonus);
     } else {
       emit(MenuState.menu);
     }

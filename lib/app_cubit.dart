@@ -41,39 +41,39 @@ class AppCubit extends Cubit<AppState> {
   }
 
   void addScore(int score) {
-    emit(state.copyWith(score: state.score + score));
     prefs.setInt('score', state.score + score);
+    emit(state.copyWith(score: state.score + score));
   }
 
   void useLive() {
-    emit(state.copyWith(addedLive: state.addedLive - 1));
     prefs.setInt('addedLive', state.addedLive - 1);
+    emit(state.copyWith(addedLive: state.addedLive - 1));
   }
 
   void useScoreMultipliers() {
-    emit(state.copyWith(scoreMultipliers: state.scoreMultipliers - 1));
     prefs.setInt('scoreMultipliers', state.scoreMultipliers - 1);
+    emit(state.copyWith(scoreMultipliers: state.scoreMultipliers - 1));
   }
 
   void setBgImage(String image) {
-    emit(state.copyWith(bgImage: image));
     prefs.setString('bgImage', image);
+    emit(state.copyWith(bgImage: image));
   }
 
   void setBallImage(String image) {
-    emit(state.copyWith(ballImage: image));
     prefs.setString('ballImage', image);
+    emit(state.copyWith(ballImage: image));
   }
 
   void setBootImage(String image) {
-    emit(state.copyWith(bootImage: image));
     prefs.setString('bootImage', image);
+    emit(state.copyWith(bootImage: image));
   }
 
   void buyItem(String s, int i) {
     final allBoughtItems = [...state.allBoughtItems, s];
-    emit(state.copyWith(allBoughtItems: allBoughtItems));
     prefs.setStringList('allBoughtItems', allBoughtItems);
+    emit(state.copyWith(allBoughtItems: allBoughtItems));
     addScore(-i);
   }
 
@@ -87,6 +87,16 @@ class AppCubit extends Cubit<AppState> {
     if (state.score < 1000) return;
     emit(state.copyWith(addedLive: state.addedLive + 1));
     addScore(-1000);
+  }
+
+  void addLive() {
+    prefs.setInt('addedLive', state.addedLive + 1);
+    emit(state.copyWith(addedLive: state.addedLive + 1));
+  }
+
+  void addScoreMultipliers() {
+    prefs.setInt('scoreMultipliers', state.scoreMultipliers + 1);
+    emit(state.copyWith(scoreMultipliers: state.scoreMultipliers + 1));
   }
 }
 
