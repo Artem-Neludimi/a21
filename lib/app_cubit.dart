@@ -39,9 +39,14 @@ class AppCubit extends Cubit<AppState> {
     prefs.setInt('score', state.score + score);
   }
 
-  void subtractLive() {
+  void useLive() {
     emit(state.copyWith(addedLive: state.addedLive - 1));
     prefs.setInt('addedLive', state.addedLive - 1);
+  }
+
+  void useScoreMultipliers() {
+    emit(state.copyWith(scoreMultipliers: state.scoreMultipliers - 1));
+    prefs.setInt('scoreMultipliers', state.scoreMultipliers - 1);
   }
 
   void setBgImage(String image) {

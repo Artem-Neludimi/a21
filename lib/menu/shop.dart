@@ -65,6 +65,7 @@ class Shop extends StatelessWidget {
                       Expanded(
                         flex: 2,
                         child: Board(
+                          padding: const EdgeInsets.all(4),
                           child: ListView(
                             scrollDirection: Axis.horizontal,
                             children: const [
@@ -81,9 +82,40 @@ class Shop extends StatelessWidget {
                       Expanded(
                         flex: 2,
                         child: Board(
-                          child: ListView(
-                            scrollDirection: Axis.horizontal,
-                            children: const [],
+                          padding: const EdgeInsets.all(4),
+                          child: Row(
+                            children: [
+                              Expanded(
+                                child: Column(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: [
+                                    Image.asset(
+                                      'assets/images/added_live.png',
+                                      height: 40,
+                                    ),
+                                    Text(
+                                      appCubit.state.addedLive.toString(),
+                                      style: const TextStyle(fontSize: 24),
+                                    ),
+                                  ],
+                                ),
+                              ),
+                              Expanded(
+                                child: Column(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: [
+                                    Image.asset(
+                                      'assets/images/double.png',
+                                      height: 40,
+                                    ),
+                                    Text(
+                                      appCubit.state.scoreMultipliers.toString(),
+                                      style: const TextStyle(fontSize: 24),
+                                    ),
+                                  ],
+                                ),
+                              ),
+                            ],
                           ),
                         ),
                       ),

@@ -98,8 +98,9 @@ class _GamePresentationState extends State<_GamePresentation> {
                   if (state.isLose)
                     GestureDetector(
                       onTap: () {
+                        if (context.read<GameBloc>().state.lives <= 0) return;
                         context.read<GameBloc>().add(GameAddLive());
-                        context.read<AppCubit>().subtractLive();
+                        context.read<AppCubit>().useLive();
                       },
                       child: Stack(
                         clipBehavior: Clip.none,
@@ -142,7 +143,9 @@ class _GamePresentationState extends State<_GamePresentation> {
                     GestureDetector(
                       onTap: () {
                         if (context.read<GameBloc>().state.multipliedScore) return;
+                        if (context.read<AppCubit>().state.scoreMultipliers <= 0) return;
                         context.read<AppCubit>().addScore(state.score);
+                        context.read<AppCubit>().useScoreMultipliers();
                         context.read<GameBloc>().add(GameMultiplyScore());
                       },
                       child: Stack(
