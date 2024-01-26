@@ -15,7 +15,7 @@ class BallSprite extends SpriteComponent with HasGameRef<MyGame>, CollisionCallb
 
   @override
   Future<void> onLoad() async {
-    final ball = await gameRef.loadSprite('ball.png');
+    final ball = await gameRef.loadSprite('ball_1.png');
     size = Vector2(100, 100);
     position = Vector2(
       gameRef.size.x / 2 - 50,

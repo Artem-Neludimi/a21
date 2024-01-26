@@ -15,6 +15,7 @@ import 'nickname.dart';
 import 'onborading.dart';
 import 'rating.dart';
 import 'setings.dart';
+import 'shop.dart';
 import 'splash.dart';
 
 class MyHomePage extends StatefulWidget {
@@ -93,6 +94,9 @@ class _MyHomePageState extends State<MyHomePage> {
                   MenuState.rating => const Rating(
                       key: ValueKey(MenuState.rating),
                     ),
+                  MenuState.shop => const Shop(
+                      key: ValueKey(MenuState.shop),
+                    ),
                 },
               ),
             ),
@@ -124,6 +128,8 @@ class MenuCubit extends Cubit<MenuState> {
   void toHowToPlay() => emit(MenuState.howToPlay);
 
   void toRating() => emit(MenuState.rating);
+
+  void toShop() => emit(MenuState.shop);
 }
 
 enum MenuState {
@@ -135,4 +141,5 @@ enum MenuState {
   settings,
   howToPlay,
   rating,
+  shop,
 }

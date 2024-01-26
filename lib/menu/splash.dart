@@ -65,7 +65,7 @@ class _BallState extends State<_Ball> {
       child: AnimatedRotation(
         duration: const Duration(milliseconds: 100),
         turns: _angle,
-        child: Image.asset('assets/images/ball.png'),
+        child: Image.asset('assets/images/ball_1.png'),
       ),
     );
   }
