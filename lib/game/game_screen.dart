@@ -51,7 +51,13 @@ class _GamePresentationState extends State<_GamePresentation> {
   @override
   void initState() {
     _bloc = context.read<GameBloc>();
-    _game = MyGame(_bloc);
+    final appCubit = context.read<AppCubit>();
+    _game = MyGame(
+      _bloc,
+      backgroundImage: appCubit.state.bgImage,
+      ballImage: appCubit.state.ballImage,
+      bootImage: appCubit.state.bootImage,
+    );
     super.initState();
   }
 

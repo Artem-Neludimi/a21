@@ -14,7 +14,15 @@ import 'boot.dart';
 
 class MyGame extends FlameGame with PanDetector, HasCollisionDetection {
   final GameBloc bloc;
-  MyGame(this.bloc);
+  final String backgroundImage;
+  final String ballImage;
+  final String bootImage;
+  MyGame(
+    this.bloc, {
+    required this.backgroundImage,
+    required this.ballImage,
+    required this.bootImage,
+  });
 
   late BootSprite boot;
   late BallSprite ball;

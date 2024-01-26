@@ -7,7 +7,7 @@ class BackGround extends SpriteComponent with HasGameRef<MyGame> {
   @override
   Future<void> onLoad() async {
     sprite = await Sprite.load(
-      'bg_1.png',
+      gameRef.backgroundImage.substring(14),
       srcPosition: Vector2(50, 50),
       srcSize: Vector2(gameRef.size.x, gameRef.size.y),
     );
